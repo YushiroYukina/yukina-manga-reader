@@ -10,7 +10,7 @@
     "builds and APK/EXE",
     "other projects"
   ],
-  "uploadPerformed": false,
+  "uploadPerformed": true,
   "licenseChosen": false,
   "macNativeVerified": false,
   "windowsSnapshotTestsPassed": 46,
@@ -19,10 +19,11 @@
   "androidRebuiltDuringPreparation": false,
   "sourceAudit": "hashes + AST/XML + scoped credentials/path exclusions; not a complete security assessment",
   "localGitInitialized": true,
-  "commitsCreated": 2,
-  "remoteConfigured": false,
+  "commitsCreated": 3,
+  "remoteConfigured": true,
   "localPreparation": "GitHub Desktop repository added; initial commit prepared",
   "commitEmailPrivacy": "GitHub noreply; repository-local setting only",
   "displayName": "yukina漫画阅读器",
-  "repositoryName": "yukina-manga-reader"
+  "repositoryName": "yukina-manga-reader",
+  "documentation": "Features, supported products and usage boundaries expanded"
 }

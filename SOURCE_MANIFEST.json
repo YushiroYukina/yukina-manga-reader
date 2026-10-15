@@ -92,12 +92,12 @@
   "desktop/verify_position.py": "36ff551cb854383092565dfa6dd9375fbee2575439a729fd200eb7b7e8023152",
   "desktop/verify_reading_clock.py": "07eff3b1e0a2e394ce83bd8dc2debae7ab5c7106dccfceb045655954dd891930",
   "desktop/verify_thumbnail_executable.py": "550b3713d80b845f6d9f30d2ae19e99f2e7243acb9b5222e426296a0a7c4c757",
-  "docs/GITHUB_START.md": "accb35e3369de6401764530d4af654bba86043e7372e37b8d3bcf3a418422fca",
+  "docs/GITHUB_START.md": "a54b217ef9ed2a59ee58d6cbfc58d051f4f255d2658dde57692a854b206c53b8",
   "docs/LICENSING.md": "c7fc6e9bb192d09baed8ee6923fc14934104a3197a7c5b53c504bfa6106f4cd1",
   "docs/VALIDATION.md": "553639d83e1089a98003f64611f6e4e1fe8af4c7bc59bb5bd2156c4c54556733",
   "macos/Migi.macOS.spec.template": "93093bc06bcb0bad48e80c370cc0ac8f3588729d856ee42c71a35bcf70eac0e8",
   "macos/README.md": "8768c3434f640956b181efdd1f0cf6d33d3a36c1b030a4cec1828795e64e260b",
   "macos/requirements-build.txt": "284b2c7ca0d0b210fda48c1680fa943e870fdb44ab15106e662407177004c3b6",
-  "README.md": "f44103b52c7e0a3cb74ff5cea1f56bda928961dd553fc60128a6a0e642984459",
+  "README.md": "0c11e8d4a1638da46e7d565a6adeaca946d05d793a1be17899af625cbd4da930",
   "tools/verify_source.py": "e84d9352fbb06af396e0f38d280dfe6c65fd2c4094b74f2d804c013324e8cd3e"
 }

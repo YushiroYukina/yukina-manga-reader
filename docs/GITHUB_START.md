@@ -9,7 +9,7 @@
 
 ## 推荐图形操作
 
-当前本机准备目录已加入 GitHub Desktop；首次本地提交完成后即可使用 Publish repository。未配置远程地址，尚未上传。ZIP 不包含 Git 历史，解压后仍需创建仓库及首次提交。
+当前本机准备目录已加入 GitHub Desktop；首次本地提交完成后即可使用 Publish repository。仓库现已发布到 GitHub 私有仓库，远程名为 origin；后续修改完成本地提交后用 Push origin 更新。ZIP 不包含 Git 历史，解压后仍需创建仓库及首次提交。
 
 1. 解压准备 ZIP 到长期使用的目录，或直接使用已准备的目录。ZIP 不含 .git，使用 ZIP 时先将解压得到的文件夹改名为 yukina-manga-reader，再在 GitHub Desktop 用 File → New Repository，Name 填 yukina-manga-reader，Local path 选它的父目录（不要再选 yukina-manga-reader 本身），不额外生成 README 或许可证；不要选择整个“开发程序”父目录。直接使用准备目录则用 File → Add Local Repository。
 2. 查看 Changes：应只有 desktop、android、macos、docs、tools 和根部说明。不得含 .tools、.venv、data、cache、签名密钥、个人书籍或其他软件。
