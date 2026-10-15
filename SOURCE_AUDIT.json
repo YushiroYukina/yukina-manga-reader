@@ -1,0 +1,26 @@
+{
+  "date": "2026-10-15",
+  "files": 101,
+  "sourceBytes": 1297454,
+  "exclusions": [
+    "user books and libraries",
+    "cache and screenshots",
+    "SDK/JDK and virtualenv",
+    "signing keys",
+    "builds and APK/EXE",
+    "other projects"
+  ],
+  "uploadPerformed": false,
+  "licenseChosen": false,
+  "macNativeVerified": false,
+  "windowsSnapshotTestsPassed": 46,
+  "androidExistingHostChecks": 24,
+  "androidExistingDeviceChecks": 49,
+  "androidRebuiltDuringPreparation": false,
+  "sourceAudit": "hashes + AST/XML + scoped credentials/path exclusions; not a complete security assessment",
+  "localGitInitialized": true,
+  "commitsCreated": 1,
+  "remoteConfigured": false,
+  "localPreparation": "GitHub Desktop repository added; initial commit prepared",
+  "commitEmailPrivacy": "GitHub noreply; repository-local setting only"
+}

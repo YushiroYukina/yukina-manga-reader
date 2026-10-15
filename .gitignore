@@ -1,0 +1,39 @@
+# Toolchains and generated outputs
+**/.tools/
+**/.venv/
+**/venv/
+**/__pycache__/
+*.py[cod]
+**/build/
+**/dist/
+**/cache/
+**/data/
+**/qa-temp/
+**/release-*/
+*.log
+hs_err_pid*
+*.apk
+*.aab
+*.exe
+*.dll
+*.dylib
+*.zip
+# Signing material and local configuration
+*.keystore
+*.jks
+*.p12
+*.pfx
+*.key
+.env
+.env.*
+!.env.example
+local.properties
+**/.DS_Store
+Thumbs.db
+# User books; generated QA samples below are intentional
+*.pdf
+*.epub
+*.mobi
+!android/tests/assets/测试漫画.pdf
+!android/tests/assets/测试漫画.epub
+!android/tests/assets/测试漫画.mobi

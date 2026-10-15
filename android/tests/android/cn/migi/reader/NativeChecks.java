@@ -1,0 +1,110 @@
+package cn.migi.reader;
+import android.app.*;
+import android.content.*;
+import android.content.pm.ActivityInfo;
+import android.graphics.*;
+import android.net.Uri;
+import android.os.*;
+import android.provider.DocumentsContract;
+import org.json.*;
+import java.io.*;
+import java.security.MessageDigest;
+import java.util.*;
+import java.time.*;
+
+public final class NativeChecks extends Instrumentation {
+    int passed=0;
+    void check(boolean value,String name){if(!value)throw new AssertionError(name);passed++;Bundle b=new Bundle();b.putString("stream","PASS: "+name+"\n");sendStatus(0,b);}
+    void waitUntil(java.util.function.BooleanSupplier condition)throws Exception{long end=SystemClock.elapsedRealtime()+12000;while(SystemClock.elapsedRealtime()<end){final boolean[] okay={false};runOnMainSync(()->okay[0]=condition.getAsBoolean());if(okay[0])return;Thread.sleep(100);}throw new AssertionError("Timed out waiting for UI");}
+    byte[] hash(Uri uri)throws Exception{try(InputStream in=getTargetContext().getContentResolver().openInputStream(uri)){return MessageDigest.getInstance("SHA-256").digest(Core.readBounded(in,8*1024*1024));}}
+    long touchStart;
+    void touch(ReaderSurface view,int action,float x){long now=SystemClock.uptimeMillis();if(action==android.view.MotionEvent.ACTION_DOWN)touchStart=now;android.view.MotionEvent e=android.view.MotionEvent.obtain(touchStart,now,action,x*view.getWidth(),view.getHeight()*.5f,0);view.onTouchEvent(e);e.recycle();}
+    void swipe(ReaderSurface view,float from,float to){long now=SystemClock.uptimeMillis();for(int i=0;i<5;i++){int action=i==0?android.view.MotionEvent.ACTION_DOWN:i==4?android.view.MotionEvent.ACTION_UP:android.view.MotionEvent.ACTION_MOVE;android.view.MotionEvent e=android.view.MotionEvent.obtain(now,now+i*100,action,from+(to-from)*i/4,350,0);view.onTouchEvent(e);e.recycle();
+        try{java.lang.reflect.Field preview=ReaderSurface.class.getDeclaredField("pages"),request=ReaderSurface.class.getDeclaredField("previewRequest");preview.setAccessible(true);request.setAccessible(true);if(view.isInteracting()&&((List<?>)preview.get(view)).isEmpty()){Bitmap page=Bitmap.createBitmap(200,300,Bitmap.Config.RGB_565);page.eraseColor(Color.BLUE);view.supplyPreview(request.getLong(view),java.util.Collections.singletonList(page));}}catch(Exception ex){throw new RuntimeException(ex);}
+    }try{java.lang.reflect.Field animation=ReaderSurface.class.getDeclaredField("animation");animation.setAccessible(true);android.animation.ValueAnimator animator=(android.animation.ValueAnimator)animation.get(view);if(animator!=null)animator.end();}catch(Exception e){throw new RuntimeException(e);}}
+    public void onCreate(Bundle args){super.onCreate(args);start();}
+    public void onStart(){Bundle result=new Bundle();try{
+        check(Core.xml("<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.1//EN' 'http://invalid.example/xhtml.dtd'><html><body><img src='cover.png'/></body></html>".getBytes("UTF-8")).getDocumentElement().getNodeName().equals("html"),"Android XHTML doctype without external fetch");
+        boolean rejected=false;try{Core.xml("<!DOCTYPE html [<!ENTITY x SYSTEM 'file:///private'>]><html>&x;</html>".getBytes("UTF-8"));}catch(IOException expected){rejected=true;}check(rejected,"Android custom entity rejected");
+        final int[] turns={0};
+        runOnMainSync(()->{
+            ReaderSurface view=new ReaderSurface(getTargetContext());view.layout(0,0,1000,700);view.listener=new ReaderSurface.Listener(){public void turn(int step){turns[0]+=step;}public void center(){}public boolean preview(int step,long request){return true;}};
+            Bitmap initial=Bitmap.createBitmap(200,300,Bitmap.Config.RGB_565);initial.eraseColor(Color.RED);view.setPages(java.util.Collections.singletonList(initial),1,false);
+            swipe(view,200,800);check(turns[0]==1,"RTL drag crosses center once");
+            swipe(view,800,200);check(turns[0]==0,"RTL reverse drag");
+            swipe(view,500,900);check(turns[0]==0,"center-start drag does not turn");
+            swipe(view,200,550);check(turns[0]==1,"crossing midpoint turns before far center boundary");
+            swipe(view,800,450);check(turns[0]==0,"reverse midpoint crossing turns");
+            swipe(view,200,490);check(turns[0]==0,"same-half drag does not turn");
+            swipe(view,200,500);check(turns[0]==0,"exact midpoint does not turn");
+            view.rtl=false;swipe(view,200,800);check(turns[0]==-1,"LTR drag reverses direction");
+            try{java.lang.reflect.Field zoom=ReaderSurface.class.getDeclaredField("zoom");zoom.setAccessible(true);zoom.setFloat(view,2);swipe(view,200,800);check(turns[0]==-1,"zoomed drag pans without turning");zoom.setFloat(view,1);}catch(Exception e){throw new RuntimeException(e);}
+            view.rtl=true;view.effect="book";java.util.List<Bitmap> first=new java.util.ArrayList<>(),next=new java.util.ArrayList<>();
+            for(int i=0;i<2;i++){Bitmap b=Bitmap.createBitmap(200,300,Bitmap.Config.RGB_565);b.eraseColor(Color.RED);first.add(b);b=Bitmap.createBitmap(200,300,Bitmap.Config.RGB_565);b.eraseColor(Color.BLUE);next.add(b);}
+            view.setPages(first,1,false);view.setPages(next,1,true);
+            try{java.lang.reflect.Field progress=ReaderSurface.class.getDeclaredField("progress");progress.setAccessible(true);Bitmap frame=Bitmap.createBitmap(1000,700,Bitmap.Config.ARGB_8888);for(float t:new float[]{.25f,.5f,.75f}){progress.setFloat(view,t);view.draw(new Canvas(frame));try(FileOutputStream out=new FileOutputStream(new File(getTargetContext().getExternalFilesDir("qa-frames"),"book-"+(int)(t*100)+".png"))){frame.compress(Bitmap.CompressFormat.PNG,100,out);}}frame.recycle();check(true,"book leaf projections render before and after spine");}catch(Exception e){throw new RuntimeException(e);}view.clear();
+        });
+        android.content.Context target=getTargetContext(),test=getContext();
+        List<JSONObject> sources=new ArrayList<>();Uri tree=DocumentsContract.buildTreeDocumentUri(test.getPackageName()+".documents","root");
+        Bundle ready=new Bundle();ready.putString("stream","READY_FIXTURE_GRANT\n");sendStatus(0,ready);
+        long grantDeadline=SystemClock.elapsedRealtime()+15000;boolean granted=false;
+        while(SystemClock.elapsedRealtime()<grantDeadline){try{target.getContentResolver().takePersistableUriPermission(tree,Intent.FLAG_GRANT_READ_URI_PERMISSION);granted=true;break;}catch(SecurityException pending){Thread.sleep(100);}}
+        if(!granted)throw new AssertionError("Fixture provider grant timed out");
+        for(String name:test.getAssets().list(""))if(Core.format(name)) {
+            Uri uri=DocumentsContract.buildDocumentUriUsingTree(tree,name);byte[] before=hash(uri);
+            try(Books.Engine engine=Books.open(target.getContentResolver(),uri,name)){
+                check(engine.count()==(name.endsWith(".mobi")?2:5),"page count "+name);
+                Bitmap first=engine.render(0,600);int color=first.getPixel(first.getWidth()/2,first.getHeight()/2);check(Color.red(color)>230&&Color.green(color)<30,"first page "+name);first.recycle();
+                Bitmap next=engine.render(1,600);color=next.getPixel(next.getWidth()/2,next.getHeight()/2);check(name.endsWith(".mobi")?Color.blue(color)>230:Color.green(color)>90,"next page "+name);next.recycle();
+            }
+            check(Arrays.equals(before,hash(uri)),"source unchanged "+name);sources.add(Store.file(name,uri.toString()));
+        }
+        Intent intent=new Intent(target,MainActivity.class);intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        ready.putString("stream","READY_UI\n");sendStatus(0,ready);
+        MainActivity a=(MainActivity)startActivitySync(intent);
+        runOnMainSync(()->{try{a.persist(tree);a.store.add(sources);a.openBook(sources.stream().filter(b->b.optString("title").endsWith(".epub")).findFirst().get(),0);}catch(Exception e){throw new RuntimeException(e);}});
+        waitUntil(()->a.engine!=null&&!a.busy);runOnMainSync(()->a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE));waitUntil(()->a.root.getWidth()>a.root.getHeight()&&!a.busy);
+        runOnMainSync(()->a.display(1,false));waitUntil(()->!a.busy&&a.volume.optInt("page")==1);
+        waitUntil(()->a.surface.getWidth()>0&&a.surface.getHeight()>0);
+        java.lang.reflect.Field pages=ReaderSurface.class.getDeclaredField("pages");pages.setAccessible(true);
+        check(((List<?>)pages.get(a.surface)).size()==2,"landscape dual pages");
+        final Bitmap[] frames=new Bitmap[2];final int[] size=new int[2];
+        runOnMainSync(()->{size[0]=a.surface.getWidth();size[1]=a.surface.getHeight();frames[0]=Bitmap.createBitmap(size[0],size[1],Bitmap.Config.ARGB_8888);a.surface.draw(new Canvas(frames[0]));a.center();frames[1]=Bitmap.createBitmap(a.surface.getWidth(),a.surface.getHeight(),Bitmap.Config.ARGB_8888);a.surface.draw(new Canvas(frames[1]));});
+        check(a.surface.getWidth()==size[0]&&a.surface.getHeight()==size[1]&&frames[0].sameAs(frames[1]),"overlay keeps page size and pixels");frames[0].recycle();frames[1].recycle();
+        final double[] seconds={0};runOnMainSync(()->{a.paused=false;a.tick();seconds[0]=a.owner.optDouble("seconds");a.onWindowFocusChanged(false);});Thread.sleep(1250);runOnMainSync(a::tick);check(a.owner.optDouble("seconds")-seconds[0]>=1,"visible reader time survives focus loss");
+        runOnMainSync(()->{a.tick();a.paused=true;a.tick();seconds[0]=a.owner.optDouble("seconds");});Thread.sleep(1100);runOnMainSync(a::tick);check(a.owner.optDouble("seconds")==seconds[0],"manual pause stops time");
+        runOnMainSync(()->a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT));waitUntil(()->a.root.getWidth()<a.root.getHeight()&&!a.busy);check(((List<?>)pages.get(a.surface)).size()==1,"portrait single page");
+        final int dragPage=a.volume.optInt("page");final Bitmap[] dragFrames=new Bitmap[2];
+        runOnMainSync(()->{dragFrames[0]=Bitmap.createBitmap(a.surface.getWidth(),a.surface.getHeight(),Bitmap.Config.ARGB_8888);a.surface.draw(new Canvas(dragFrames[0]));});
+        runOnMainSync(()->{a.surface.effect="slide";touch(a.surface,android.view.MotionEvent.ACTION_DOWN,.2f);touch(a.surface,android.view.MotionEvent.ACTION_MOVE,.4f);});
+        waitUntil(()->{try{java.lang.reflect.Field f=ReaderSurface.class.getDeclaredField("pages");f.setAccessible(true);return !((List<?>)f.get(a.surface)).isEmpty();}catch(Exception e){throw new RuntimeException(e);}});
+        check(a.surface.isInteracting()&&a.volume.optInt("page")==dragPage,"held drag previews without committing page");
+        runOnMainSync(()->{dragFrames[1]=Bitmap.createBitmap(a.surface.getWidth(),a.surface.getHeight(),Bitmap.Config.ARGB_8888);a.surface.draw(new Canvas(dragFrames[1]));});check(!dragFrames[0].sameAs(dragFrames[1]),"held slide changes rendered position before finger release");for(Bitmap frame:dragFrames)frame.recycle();
+        runOnMainSync(()->{try{java.lang.reflect.Field p=ReaderSurface.class.getDeclaredField("progress");p.setAccessible(true);check(p.getFloat(a.surface)>.15f&&p.getFloat(a.surface)<.3f,"slide progress follows finger displacement");}catch(Exception e){throw new RuntimeException(e);}touch(a.surface,android.view.MotionEvent.ACTION_UP,.4f);});
+        waitUntil(()->!a.surface.isInteracting());check(a.volume.optInt("page")==dragPage,"short drag settles back without changing page");
+        runOnMainSync(()->{touch(a.surface,android.view.MotionEvent.ACTION_DOWN,.2f);touch(a.surface,android.view.MotionEvent.ACTION_MOVE,.55f);touch(a.surface,android.view.MotionEvent.ACTION_UP,.55f);});
+        waitUntil(()->!a.surface.isInteracting()&&a.volume.optInt("page")!=dragPage);check(a.volume.optInt("page")==dragPage+1,"released drag commits already rendered preview once");
+        runOnMainSync(()->a.scanFolder(tree,true,true));waitUntil(()->a.store.books().length()==4);JSONObject group=a.store.books().optJSONObject(3);check(group.optJSONArray("volumes").length()==3,"SAF tree imports three-volume group");
+        runOnMainSync(()->{try{a.store.mark(group.optJSONArray("volumes").getJSONObject(0),"已读");}catch(Exception e){throw new RuntimeException(e);}});check(!Store.allRead(group),"collection requires every volume read");
+        runOnMainSync(()->{try{for(int i=0;i<3;i++)a.store.mark(group.optJSONArray("volumes").getJSONObject(i),"已读");}catch(Exception e){throw new RuntimeException(e);}});check(Store.allRead(group),"all volumes read detected");
+        runOnMainSync(()->{try{JSONObject fake=Store.file("跨午夜测试","test://fixture");a.store.addTime(fake,fake,2,ZonedDateTime.of(2026,10,11,23,59,59,0,ZoneId.systemDefault()).toInstant().toEpochMilli(),ZonedDateTime.of(2026,10,12,0,0,1,0,ZoneId.systemDefault()).toInstant().toEpochMilli());a.store.save();a.showStats();}catch(Exception e){throw new RuntimeException(e);}});
+        check(a.store.data.optJSONObject("stats").optJSONObject("daily").has("2026-10-12"),"daily records split midnight");
+        check(!a.running,"statistics page stops reading time");
+        runOnMainSync(()->{a.showShelf();a.saveQuiet();});Store restored=new Store(target);check(restored.books().length()==4,"library persists URI references");
+        File[] pageCache=target.getCacheDir().listFiles();boolean noBookCache=true;if(pageCache!=null)for(File cached:pageCache)if(!cached.isDirectory()||!cached.getName().equals("oat_primary"))noBookCache=false;check(noBookCache,"no book or page files in cache (excluding runtime oat_primary): "+Arrays.toString(pageCache));
+        final JSONObject[] removed={null};final byte[][] original={null};
+        runOnMainSync(()->{try{group.put("currentVolume",2);group.put("coverVolume",2);removed[0]=group.getJSONArray("volumes").getJSONObject(0);original[0]=hash(Uri.parse(removed[0].getString("uri")));a.performRemoveVolume(group,removed[0]);}catch(Exception e){throw new RuntimeException(e);}});
+        check(group.optJSONArray("volumes").length()==2&&group.optInt("currentVolume")==1&&group.optInt("coverVolume")==1,"remove volume adjusts current and cover indices");
+        check(Arrays.equals(original[0],hash(Uri.parse(removed[0].getString("uri")))),"removed volume source unchanged");
+        runOnMainSync(()->{try{a.performRemoveVolume(group,group.getJSONArray("volumes").getJSONObject(0));a.performRemoveVolume(group,group.getJSONArray("volumes").getJSONObject(0));}catch(Exception e){throw new RuntimeException(e);}});
+        check(a.store.find(group.optString("id"))==null&&a.store.books().length()==3,"last volume removes empty collection only");
+        check(a.store.data.optJSONObject("stats").optDouble("totalSeconds")>0,"removal retains reading history");
+        List<JSONObject> collections=a.collectFolders(tree,"batch");
+        check(collections.size()==2&&collections.get(0).optString("title").equals("collection2"),"batch folders remain separate in natural order");
+        check(collections.get(0).optJSONArray("volumes").length()==3&&collections.get(1).optJSONArray("volumes").length()==3,"batch scans all volumes per collection");
+        JSONObject first=collections.get(0);String canonical=DocumentsContract.buildTreeDocumentUri(tree.getAuthority(),"collection2").toString();JSONObject direct=Store.file("direct",canonical).put("kind","folder");
+        check(Store.sourceKey(first).equals(Store.sourceKey(direct)),"batch and individual folder imports deduplicate");
+        try(Books.Engine book=Books.open(target.getContentResolver(),Uri.parse(first.getJSONArray("volumes").getJSONObject(0).getString("uri")),first.getJSONArray("volumes").getJSONObject(0).getString("title"))){check(book.count()>0,"batch collection keeps readable original URIs");}
+        result.putString("stream","\nNative Android checks passed: "+passed+"\n");finish(Activity.RESULT_OK,result);
+    }catch(Throwable e){result.putString("stream","FAIL: "+android.util.Log.getStackTraceString(e));finish(Activity.RESULT_CANCELED,result);}}
+}
