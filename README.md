@@ -4,6 +4,16 @@
 
 适合已经拥有本地漫画文件、希望在 Windows 电脑或 Android 平板上管理和阅读的用户。当前提供 Windows 源码、Android 平板基础版和已在 Apple Silicon Mac 实机验证的 macOS 1.0.1 源码，各平台格式支持与交互有所不同。
 
+## 安装包下载
+
+请前往 **[GitHub Releases 下载页](https://github.com/YushiroYukina/yukina-manga-reader/releases)**，展开 Assets，按系统选择。三端预览包正在准备；构建完成并发布后即可下载，不需要安装 Python。
+
+- Windows：下载 `yukina-manga-reader-windows-x64.zip`，完整解压后运行 `yukina-reader.exe`，保留 `_internal` 文件夹。
+- Android：下载 `.apk`，允许该安装来源后安装。更新现有阅读器请直接覆盖安装，保留书库。
+- Apple Silicon Mac：下载 `yukina-manga-reader-macos-arm64-v1.0.1.zip`，解压得到 `Migi.app`。此包为本地 ad-hoc 签名，未经 Apple 公证；如果被系统拦截，可按系统“隐私与安全性”提示处理，不要全局关闭安全机制。Intel Mac 不属于此包适配范围。
+
+不要点击绿色 Code → Download ZIP 来寻找安装包。
+
 ## 主要功能与特色
 
 ### 原文件直接读取
@@ -98,7 +108,7 @@ python -m venv .venv
 测试：在 desktop 目录执行 `.venv\Scripts\python.exe -m unittest discover -s tests -v`。
 打包需另装 PyInstaller，再执行 `python -m PyInstaller --noconfirm Migi.spec`。内部文件名 Migi 为历史工程名；start.bat 用于启动打包版本。
 
-Android 构建与侧载见 [安卓说明](android/README.md)，Mac 运行与构建见 [Mac 说明](macos/README.md) 和 [整合说明](macos/INTEGRATION.md)。源码仓库不附带 APK、EXE 或 Mac 安装包，当前 GitHub Releases 是否存在成品应以实际发布记录为准。
+Android 构建与侧载见 [安卓说明](android/README.md)，Mac 运行与构建见 [Mac 说明](macos/README.md) 和 [整合说明](macos/INTEGRATION.md)。可直接运行的成品通过 GitHub Releases 分发；Download ZIP / Source code 是源码，不是安装包。
 
 ## 验证与许可
 
@@ -106,6 +116,6 @@ Android 构建与侧载见 [安卓说明](android/README.md)，Mac 运行与构�
 
 本仓库不包含用户图书、个人书库、截图、缓存、SDK/JDK、虚拟环境或签名私钥；android/tests/assets 的三份图书是人工生成的纯色测试样本。
 
-作者尚未选择项目的开源许可证，不应将整个项目视为 MIT 授权。PyMuPDF / MuPDF 与 Qt / PySide6 有各自依赖许可，见 [许可说明](docs/LICENSING.md)。
+项目源码及发布采用 **AGPL-3.0-only**，完整条款见 [LICENSE](LICENSE)。PyMuPDF / MuPDF 与 Qt / PySide6 有各自依赖许可，见 [许可说明](docs/LICENSING.md)。
 
 维护此源码快照后可运行 `python tools/verify_source.py` 核对内容清单；原开发目录与此仓库不自动同步。

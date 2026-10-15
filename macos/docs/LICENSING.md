@@ -1,3 +1,7 @@
+# License update
+
+The maintainer selected AGPL-3.0-only for source and releases. See LICENSE, NOTICE.md and licenses/ in the repository root. Historical preparation notes below do not override this decision.
+
 # 许可与依赖发布核对
 
 项目作者、著作权声明及项目源码许可证尚未由维护者指定。本整理包未添加项目 LICENSE，也未替维护者授予或声明授权。

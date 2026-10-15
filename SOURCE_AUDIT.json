@@ -11,7 +11,7 @@
     "other projects"
   ],
   "uploadPerformed": true,
-  "licenseChosen": false,
+  "licenseChosen": true,
   "macNativeVerified": true,
   "windowsSnapshotTestsPassed": 46,
   "androidExistingHostChecks": 24,
@@ -66,5 +66,7 @@
     "reader/assets/violet-radio-off.svg",
     "reader/assets/violet-radio-on.svg",
     "reader/tests/test_library.py"
-  ]
+  ],
+  "license": "AGPL-3.0-only",
+  "releasePreparation": true
 }

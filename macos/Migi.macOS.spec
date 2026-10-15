@@ -6,7 +6,7 @@ if sys.platform != 'darwin':
     raise SystemExit('Build this spec on macOS with native arm64 Python.')
 base = Path(SPECPATH)
 a = Analysis([str(base/'reader/app.py')], pathex=[str(base/'reader')],
-    binaries=[], datas=[(str(base/'reader/assets'),'assets'),(str(Path(PySide6.__file__).parent/'Qt/translations/qtbase_zh_CN.qm'),'translations')],
+    binaries=[], datas=[(str(base.parent/'LICENSE'),'.'),(str(base.parent/'NOTICE.md'),'.'),(str(base.parent/'licenses'),'licenses'),(str(base/'reader/assets'),'assets'),(str(Path(PySide6.__file__).parent/'Qt/translations/qtbase_zh_CN.qm'),'translations')],
     hiddenimports=[], hookspath=[], hooksconfig={}, runtime_hooks=[],
     excludes=[], noarchive=False, optimize=0)
 pyz = PYZ(a.pure)

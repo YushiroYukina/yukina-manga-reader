@@ -1,0 +1,38 @@
+name: Build Mac download
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/mac-download.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  macos:
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          architecture: arm64
+      - name: Install native dependencies
+        run: python -m pip install -r macos/requirements-mac-build.txt
+      - name: Build and verify arm64 and ad-hoc signature
+        run: python macos/scripts/build_macos.py
+      - name: Prepare downloadable archive
+        run: |
+          mkdir -p release-assets
+          cp macos/release/Migi-Mac-arm64-v1.0.1.zip release-assets/yukina-manga-reader-macos-arm64-v1.0.1.zip
+          cd release-assets
+          shasum -a 256 *.zip > macos-SHA256SUMS.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macos-arm64-download
+          path: release-assets/*
+      - name: Attach to draft preview release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view v2026.10.15-preview --repo "$GITHUB_REPOSITORY" || gh release create v2026.10.15-preview --draft --prerelease --target "$GITHUB_SHA" --title "yukina漫画阅读器 · 三端下载预览" --notes "准备三端安装包，构建中。" --repo "$GITHUB_REPOSITORY"
+          gh release upload v2026.10.15-preview release-assets/* --clobber --repo "$GITHUB_REPOSITORY"
