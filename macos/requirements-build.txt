@@ -1,2 +1,0 @@
--r ../desktop/requirements.txt
-PyInstaller==6.22.3

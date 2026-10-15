@@ -4,7 +4,7 @@
 
 Windows 依赖 PyMuPDF/MuPDF：采用 AGPL 与商业双重许可，不能直接认为完整项目可无条件按 MIT 分发。PySide6/Qt 也有各自许可条款，分发时须保留对应声明并检查具体组件。
 Android 使用 Android 平台 API 和官方构建工具，未把 SDK/JDK 二进制随源码再分发；下载与使用工具遵守厂商许可。
-macos 使用相同 Python/Qt/PyMuPDF 依赖边界。人工生成的纯色测试资料不含用户图书。
+Mac 1.0.1 已整合为独立实现，仍使用 Python/Qt/PyMuPDF 依赖；详细待核对事项见 [Mac 许可说明](../macos/docs/LICENSING.md)。人工生成的纯色测试资料不含用户图书。
 
 官方资料：
 - https://pymupdf.io/licensing

@@ -1,0 +1,25 @@
+# Local environments and generated artifacts
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.DS_Store
+build/
+dist/
+release/
+work/
+reader/qa-temp/
+# User library/cache/locks and local book files
+Migi-data/
+data/
+cache/
+*.lock
+*.pdf
+*.epub
+*.mobi
+*.cbz
+*.cbr
+.env
+.env.*
+!.env.example

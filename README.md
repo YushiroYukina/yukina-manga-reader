@@ -2,7 +2,7 @@
 
 面向日漫的本地漫画阅读器。默认从右向左阅读，支持本地 PDF、EPUB、MOBI，以沉浸阅读、多卷书库和原文件直接读取为主要设计方向。
 
-适合已经拥有本地漫画文件、希望在 Windows 电脑或 Android 平板上管理和阅读的用户。当前提供 Windows 源码、Android 平板基础版和 Apple Silicon Mac 构建交接材料，各平台完成度与格式支持范围有所不同。
+适合已经拥有本地漫画文件、希望在 Windows 电脑或 Android 平板上管理和阅读的用户。当前提供 Windows 源码、Android 平板基础版和已在 Apple Silicon Mac 实机验证的 macOS 1.0.1 源码，各平台格式支持与交互有所不同。
 
 ## 主要功能与特色
 
@@ -53,15 +53,15 @@ Android 支持实时跟手：从中央 30% 区域之外起拖，页面随手指�
 | 联想小新 Pad Pro 12.7 骁龙版（骁龙 870 / TB371FC） | 已在真机安装和验证 | Android 14，适配横竖屏、触控、沉浸阅读、TF 卡及跟手翻页 |
 | 其他 Android 平板 | 可作为后续侧载测试对象 | 最低声明 Android 8.0 / API 26，目标 API 34；最低版本声明不代表每款设备均已实测，性能及文件授权行为需具体设备验证 |
 | Android 手机 | 暂无专门布局验收 | 当前以平板体验为主要目标，手机小屏布局与手势需要进一步适配 |
-| MacBook Air M1 / Apple Silicon Mac | 本仓库仅有构建交接模板 | 目标设备为 M1 Mac，尚无本工作区的 Mac 原生运行 / 打包验证；不能视为已发布可用 Mac 版本 |
+| MacBook Air M1 / Apple Silicon Mac | macOS 1.0.1 源码已整合；维护者已部署并实机验证 | MacBook Air M1 / macOS 26.5.1（25F80）；原生 arm64 Python 3.12，最低声明 macOS 14；46 项 Cocoa 回归与独立应用 86 项检查通过，其他机型/系统及实体多屏仍需验证 |
 
-Windows 与 Android 使用各自独立的书库，不自动迁移或同步。此处的 Mac 材料不包含另一个 Mac 工作环境可能产生的后续源码。
+三个平台使用各自独立的书库，不自动迁移或同步。Mac 1.0.1 已从维护者交付的完整源码包整合，原工程与 .app 名称仍为 MIGI，以保留已验证构建的对应关系；详见 [Mac 整合与实测说明](macos/INTEGRATION.md)。
 
 ## 文件格式与使用范围
 
-主要面向无 DRM 的本地漫画、扫描版和图片型电子书。不同格式并不意味着所有电子书版本与排版都能兼容。
+主要面向无 DRM 的本地漫画、扫描版和图片型电子书。下表的桌面格式能力同时适用于 Windows 与 Mac 源码实现；Mac 原生快捷键、Retina 渲染、数据目录及对话框适配见 [Mac 说明](macos/README.md)。不同格式并不意味着所有电子书版本与排版都能兼容。
 
-| 格式 | Windows 端 | Android 端 |
+| 格式 | Windows / Mac 桌面端 | Android 端 |
 | --- | --- | --- |
 | PDF | 通过 PyMuPDF 读取本地文件 | 系统 PdfRenderer；要求可寻址的本地来源，无密码 |
 | EPUB | 按书籍阅读顺序读取图片，文字内容有基础固定尺寸排版 | 主要支持图片漫画；支持标准 XHTML 声明，暂不支持文字排版、ZIP64、DRM |
@@ -83,7 +83,7 @@ Windows 将书库数据与可清理封面存放在程序目录；当前实现禁
 | --- | --- |
 | [desktop/](desktop/) | Windows Python / PySide6 / PyMuPDF 源码、测试及打包配置 |
 | [android/](android/) | Android Java 原生平板阅读器、Windows 构建工具及独立真机测试 |
-| [macos/](macos/) | Apple Silicon 构建模板与后续适配说明 |
+| [macos/](macos/) | Mac 1.0.1 完整独立源码、原生适配、构建脚本及实测报告 |
 | [docs/](docs/) | 验证记录、GitHub 使用指南与许可说明 |
 
 ### 从源码启动 Windows 端
@@ -98,11 +98,11 @@ python -m venv .venv
 测试：在 desktop 目录执行 `.venv\Scripts\python.exe -m unittest discover -s tests -v`。
 打包需另装 PyInstaller，再执行 `python -m PyInstaller --noconfirm Migi.spec`。内部文件名 Migi 为历史工程名；start.bat 用于启动打包版本。
 
-Android 构建与侧载见 [安卓说明](android/README.md)，Mac 适配边界见 [Mac 交接说明](macos/README.md)。源码仓库不附带 APK、EXE 或可用 Mac 安装包，当前 GitHub Releases 是否存在成品应以实际发布记录为准。
+Android 构建与侧载见 [安卓说明](android/README.md)，Mac 运行与构建见 [Mac 说明](macos/README.md) 和 [整合说明](macos/INTEGRATION.md)。源码仓库不附带 APK、EXE 或 Mac 安装包，当前 GitHub Releases 是否存在成品应以实际发布记录为准。
 
 ## 验证与许可
 
-当前 Windows 源码 46 项测试通过；Android 最近一轮已有 24 项主机检查与 49 项真机检查通过。这些检查覆盖具体样本和交互，不代表所有设备、图书与系统版本都兼容；Mac 原生运行未验证。详见 [验证说明](docs/VALIDATION.md)。
+当前 Windows 源码 46 项测试通过；Android 最近一轮已有 24 项主机检查与 49 项真机检查通过。Mac 随包报告记录 46 项 Cocoa 原生回归、独立应用 86 项检查、54 个 Mach-O arm64 与 ad-hoc 签名核验通过；该部分来自维护者的 Mac 实测，本次 Windows 整合未重新执行。以上检查覆盖具体样本和交互，不代表所有设备、图书与系统版本都兼容。详见 [验证说明](docs/VALIDATION.md)。
 
 本仓库不包含用户图书、个人书库、截图、缓存、SDK/JDK、虚拟环境或签名私钥；android/tests/assets 的三份图书是人工生成的纯色测试样本。
 
