@@ -82,7 +82,7 @@ class Covers:
             gradient.setColorAt(1,theme_color('#1c292f')); painter.fillRect(pix.rect(),gradient)
             painter.setPen(theme_color('#789d9d')); painter.drawRect(13,13,183,273)
             painter.setFont(QFont('Microsoft YaHei UI',9)); painter.setPen(theme_color('#a5c7c3'))
-            painter.drawText(QRectF(24,30,162,25),Qt.AlignmentFlag.AlignLeft,'MIGI  /  右页')
+            painter.drawText(QRectF(24,30,162,25),Qt.AlignmentFlag.AlignLeft,'yukina漫画阅读器')
             painter.setFont(QFont('Microsoft YaHei UI',16,QFont.Weight.DemiBold)); painter.setPen(theme_color('#edf4f1'))
             title=entry['title']; title=title if len(title)<35 else title[:34]+'…'
             painter.drawText(QRectF(25,70,160,135),Qt.AlignmentFlag.AlignCenter|Qt.TextFlag.TextWordWrap,title)
@@ -162,7 +162,7 @@ class LibraryPage(QWidget):
         layout=QVBoxLayout(self); layout.setContentsMargins(32,26,32,20); layout.setSpacing(18)
         header=QHBoxLayout()
         brand=QVBoxLayout(); brand.setSpacing(5)
-        eyebrow=QLabel('MIGI  /  右页'); eyebrow.setObjectName('eyebrow'); brand.addWidget(eyebrow)
+        eyebrow=QLabel('yukina漫画阅读器'); eyebrow.setObjectName('eyebrow'); brand.addWidget(eyebrow)
         heading=QLabel('我的书库'); heading.setStyleSheet('font-size:28px; font-weight:600; color:#e6eddf;'); brand.addWidget(heading)
         header.addLayout(brand); header.addStretch(); header.setSpacing(12)
         self.theme_combo=QComboBox()

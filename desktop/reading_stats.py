@@ -111,7 +111,7 @@ class ReadingStatsPage(QWidget):
         body=QWidget(); layout=QVBoxLayout(body); layout.setContentsMargins(32,26,32,24); layout.setSpacing(18)
         self.scroll.setWidget(body); outer.addWidget(self.scroll)
         top=QHBoxLayout(); brand=QVBoxLayout()
-        eyebrow=QLabel('MIGI  /  阅读统计'); eyebrow.setObjectName('eyebrow'); brand.addWidget(eyebrow)
+        eyebrow=QLabel('yukina漫画阅读器  /  阅读统计'); eyebrow.setObjectName('eyebrow'); brand.addWidget(eyebrow)
         title=QLabel('把阅读留在日历里'); title.setStyleSheet('font-size:28px; font-weight:600;'); brand.addWidget(title)
         hint=QLabel('回顾阅读投入与每日变化 · 点击趋势图查看当天书籍'); hint.setObjectName('muted'); brand.addWidget(hint)
         top.addLayout(brand); top.addStretch()

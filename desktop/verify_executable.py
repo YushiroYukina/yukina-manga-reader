@@ -20,7 +20,7 @@ def find(hwnd,arg):
     pid=wintypes.DWORD(); user32.GetWindowThreadProcessId(ctypes.c_void_p(hwnd),ctypes.byref(pid))
     if pid.value==process.pid:
         text=ctypes.create_unicode_buffer(512); user32.GetWindowTextW(ctypes.c_void_p(hwnd),text,512)
-        if text.value=='右页 · 漫画阅读器': handles.append(hwnd)
+        if text.value=='yukina漫画阅读器': handles.append(hwnd)
     return True
 def rect(hwnd):
     bounds=wintypes.RECT(); user32.GetWindowRect(ctypes.c_void_p(hwnd),ctypes.byref(bounds))

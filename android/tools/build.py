@@ -53,7 +53,7 @@ manifest=ROOT/'app/src/main/AndroidManifest.xml'
 if qa:
     ET.register_namespace('android','http://schemas.android.com/apk/res/android')
     tree=ET.parse(manifest); tree.getroot().set('package','cn.migi.reader.qa')
-    app=tree.getroot().find('application'); app.set('{http://schemas.android.com/apk/res/android}label','右页 · MIGI 验收')
+    app=tree.getroot().find('application'); app.set('{http://schemas.android.com/apk/res/android}label','yukina漫画阅读器 验收')
     app.find('activity').set('{http://schemas.android.com/apk/res/android}name','cn.migi.reader.MainActivity')
     manifest=BUILD/'qa-manifest.xml';tree.write(manifest,encoding='utf-8',xml_declaration=True)
 package('app',manifest,ROOT/'app/src/main/res',classes,BUILD/'dex',ROOT/('dist/Migi-Android-QA.apk' if qa else 'dist/Migi-Android-0.1.0-alpha.apk'))

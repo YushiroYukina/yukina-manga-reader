@@ -1,4 +1,4 @@
-# 右页 · MIGI
+# yukina漫画阅读器
 
 双击 start.bat 启动，或运行 dist/Migi/Migi.exe。
 

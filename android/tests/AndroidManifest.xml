@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="cn.migi.reader.tests">
     <uses-sdk android:minSdkVersion="26" android:targetSdkVersion="34"/>
-    <application android:label="MIGI 基础验收">
+    <application android:label="yukina漫画阅读器 验收">
         <activity android:name="cn.migi.reader.FixtureSetup" android:exported="true"/>
         <provider android:name="cn.migi.reader.TestDocuments" android:authorities="cn.migi.reader.tests.documents" android:permission="android.permission.MANAGE_DOCUMENTS" android:exported="true" android:grantUriPermissions="true">
             <intent-filter><action android:name="android.content.action.DOCUMENTS_PROVIDER"/></intent-filter>

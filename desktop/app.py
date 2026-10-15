@@ -32,7 +32,7 @@ class Window(QMainWindow):
         self.was_fullscreen = False
         self._startup_placed = False
         self._startup_screen = QApplication.screenAt(QCursor.pos()) or QApplication.primaryScreen()
-        self.setWindowTitle('右页 · 漫画阅读器')
+        self.setWindowTitle('yukina漫画阅读器')
         self.resize(1440, 960)
         self.setAcceptDrops(True)
         install_theme(QApplication.instance(),self.library.data['settings'].get('theme','sage'))
@@ -552,7 +552,7 @@ def activate_existing(pid):
         user32.GetWindowThreadProcessId(handle,ctypes.byref(owner))
         if owner.value==pid:
             title=ctypes.create_unicode_buffer(256); user32.GetWindowTextW(handle,title,256)
-            if title.value=='右页 · 漫画阅读器':
+            if title.value in ('yukina漫画阅读器','右页 · 漫画阅读器'):
                 if user32.IsIconic(handle): user32.ShowWindow(handle,9)
                 user32.SetForegroundWindow(handle); found.append(hwnd)
         return True
@@ -561,12 +561,13 @@ def activate_existing(pid):
 
 def main():
     app = QApplication(sys.argv)
+    app.setApplicationDisplayName('yukina漫画阅读器')
     app.setFont(QFont('Microsoft YaHei UI', 10))
     (ROOT/'data').mkdir(exist_ok=True)
     lock=QLockFile(str(ROOT/'data'/'reader.lock')); lock.setStaleLockTime(0)
     if not lock.tryLock(0):
         info=lock.getLockInfo()
-        if info[0]<=0 or not activate_existing(info[0]): QMessageBox.information(None,'右页已在运行','请使用已经打开的阅读器窗口。')
+        if info[0]<=0 or not activate_existing(info[0]): QMessageBox.information(None,'yukina漫画阅读器已在运行','请使用已经打开的阅读器窗口。')
         return 0
     try: window = Window()
     except Exception as error:

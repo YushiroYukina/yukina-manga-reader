@@ -1,4 +1,4 @@
-# 右页 · MIGI Android 0.1.0-alpha
+# yukina漫画阅读器 Android 0.1.0-alpha
 
 独立安卓原生基础项目，不修改 Windows 阅读器，不迁移 Windows 书库。目标设备为联想小新 Pad Pro 12.7 骁龙 870／Android 14。最低系统 Android 8.0（API 26），编译及目标 API 34。当前为基础开发版，不是完整移植终版。
 

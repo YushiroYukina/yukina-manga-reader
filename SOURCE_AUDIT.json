@@ -19,8 +19,10 @@
   "androidRebuiltDuringPreparation": false,
   "sourceAudit": "hashes + AST/XML + scoped credentials/path exclusions; not a complete security assessment",
   "localGitInitialized": true,
-  "commitsCreated": 1,
+  "commitsCreated": 2,
   "remoteConfigured": false,
   "localPreparation": "GitHub Desktop repository added; initial commit prepared",
-  "commitEmailPrivacy": "GitHub noreply; repository-local setting only"
+  "commitEmailPrivacy": "GitHub noreply; repository-local setting only",
+  "displayName": "yukina漫画阅读器",
+  "repositoryName": "yukina-manga-reader"
 }
