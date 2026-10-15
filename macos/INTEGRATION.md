@@ -28,7 +28,7 @@ python3 -m venv .venv
 .venv/bin/python scripts/build_macos.py
 ```
 
-源码包没有附带 dist/Migi.app 或可运行的 Mac 发布 ZIP。GitHub 的 Download ZIP 是源码，不是安装包；本次也没有创建软件安装包 Release。若需要向其他人分发独立应用，应上传 Mac 实际生成的包并另行核对签名、公证和许可。
+源码包没有附带 dist/Migi.app 或可运行的 Mac 发布 ZIP。GitHub 的 Download ZIP 是源码，不是安装包；后续已通过 GitHub Apple Silicon 构建生成应用 ZIP，并在 [三端下载预览](https://github.com/YushiroYukina/yukina-manga-reader/releases/tag/v2026.10.15-preview) 发布；该云端构建仅检查 arm64 与签名，不替代上文维护者的人工实机验收。若需要向其他人分发独立应用，应上传 Mac 实际生成的包并另行核对签名、公证和许可。
 
 ## 数据与范围
 

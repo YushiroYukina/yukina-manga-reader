@@ -96,7 +96,7 @@
   "desktop/yukina-release.spec": "5e2f7473db0997e04f78ed215542f84f93db07a6a86cdf6677d46954f6a3422c",
   "docs/GITHUB_START.md": "a54b217ef9ed2a59ee58d6cbfc58d051f4f255d2658dde57692a854b206c53b8",
   "docs/LICENSING.md": "e54b60bbbdb4d1343f537958fe141e25bb24d3ea096e2c7b6b4be77a8c734c06",
-  "docs/VALIDATION.md": "4a570ee2ad32590d8708cebaf51e743236e3a5a7728b3e16200213983c1f20b4",
+  "docs/VALIDATION.md": "8bbd8740899a5f85bf63dff8b5fd645b75cef5b41ad2fedc8bf4a87d9a9f5337",
   "LICENSE": "0d96a4ff68ad6d4b6f1f30f713b18d5184912ba8dd389f86aa7710db079abcb0",
   "licenses/GPL-3.0.txt": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
   "licenses/LGPL-3.0.txt": "e3a994d82e644b03a792a930f574002658412f62407f5fee083f2555c5f23118",
@@ -110,7 +110,7 @@
   "macos/docs/RELEASING.md": "bc40270adaae75b7c89674c488156f0eb4b3e2f733e27026c0e78ada0d5c16f5",
   "macos/docs/VALIDATION.md": "e2ed4f8863ffc2afa1851a867f7d6b243afbae95420b1da03d515ef4dceb3423",
   "macos/docs/VALIDATION_CURRENT.md": "1736d8cde4fe93a31e4c88e10a898e7671129d8ae2957f2f7d323391fbfaa37f",
-  "macos/INTEGRATION.md": "c695e77c5c286384c907e0b92b900711fd4bbb3186e476f3754f90a1d647c82a",
+  "macos/INTEGRATION.md": "0de0b6b9939d7f74a84e20bfba96d5ceaa71bc1d1fb562a9d0eed57a5dfdcd9e",
   "macos/Migi.macOS.spec": "b561f9bac53d39b0bb546900d0a94f2b466ff2334ef7964e76be4bb140f64f9e",
   "macos/reader/app.py": "458bef6214aed07b7fdf3889eba85734583004d312aaebfa40b98cb75825f679",
   "macos/reader/assets/amber-check.svg": "48f8634f09d41ed226dcde2646214d9bfda2eebdf70708dbd857f213c133f410",
@@ -180,6 +180,6 @@
   "macos/SOURCE_MANIFEST.json": "70631b0144f41b1c125d8537a9efa6b59c57c6d8d626a23f66cbd3bffef2b1cf",
   "macos/VERSION": "44e161e4495cac2cf7858043e9e6418e9579f0ddcfae826f9a372622968ce066",
   "NOTICE.md": "5bf516c8e172a8a457c1028ad60cfbf7d64e4d276b9f82994815cbb1a99f64b0",
-  "README.md": "ad5ad4255bcc27cae8957389f4fe0f0d24a2348eb63b412cce466007f0c781af",
+  "README.md": "85c121317359abd7b38cb4cd362dd9f1fe42466297670791f5547b8fa4215644",
   "tools/verify_source.py": "e84d9352fbb06af396e0f38d280dfe6c65fd2c4094b74f2d804c013324e8cd3e"
 }

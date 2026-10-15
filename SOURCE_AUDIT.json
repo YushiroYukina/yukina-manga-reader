@@ -1,6 +1,6 @@
 {
   "date": "2026-10-15",
-  "files": 177,
+  "files": 183,
   "sourceBytes": 1568860,
   "exclusions": [
     "user books and libraries",
@@ -19,9 +19,9 @@
   "androidRebuiltDuringPreparation": false,
   "sourceAudit": "hashes + AST/XML + scoped credentials/path exclusions; not a complete security assessment",
   "localGitInitialized": true,
-  "commitsCreated": 4,
+  "commitsCreated": 6,
   "remoteConfigured": true,
-  "localPreparation": "GitHub Desktop repository added; initial commit prepared",
+  "localPreparation": "published source and three-platform preview downloads",
   "commitEmailPrivacy": "GitHub noreply; repository-local setting only",
   "displayName": "yukina漫画阅读器",
   "repositoryName": "yukina-manga-reader",
@@ -68,5 +68,8 @@
     "reader/tests/test_library.py"
   ],
   "license": "AGPL-3.0-only",
-  "releasePreparation": true
+  "releasePreparation": true,
+  "releasePublished": true,
+  "releaseTag": "v2026.10.15-preview",
+  "macCloudBuildRun": 38760417934
 }

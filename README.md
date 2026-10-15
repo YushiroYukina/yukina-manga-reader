@@ -2,11 +2,19 @@
 
 面向日漫的本地漫画阅读器。默认从右向左阅读，支持本地 PDF、EPUB、MOBI，以沉浸阅读、多卷书库和原文件直接读取为主要设计方向。
 
-适合已经拥有本地漫画文件、希望在 Windows 电脑或 Android 平板上管理和阅读的用户。当前提供 Windows 源码、Android 平板基础版和已在 Apple Silicon Mac 实机验证的 macOS 1.0.1 源码，各平台格式支持与交互有所不同。
+适合已经拥有本地漫画文件、希望在 Windows、Mac 电脑或 Android 平板上管理和阅读的用户。当前提供 Windows 源码、Android 平板基础版和已在 Apple Silicon Mac 实机验证的 macOS 1.0.1 源码，各平台格式支持与交互有所不同。
 
 ## 安装包下载
 
-请前往 **[GitHub Releases 下载页](https://github.com/YushiroYukina/yukina-manga-reader/releases)**，展开 Assets，按系统选择。三端预览包正在准备；构建完成并发布后即可下载，不需要安装 Python。
+请前往 **[GitHub Releases 下载页](https://github.com/YushiroYukina/yukina-manga-reader/releases)**，展开 Assets，按系统选择。**三端预览包已发布，不需要安装 Python。** 也可以直接点击下面的对应包：
+
+| 平台 | 下载 |
+| --- | --- |
+| Windows 11 x64 | [便携 ZIP](https://github.com/YushiroYukina/yukina-manga-reader/releases/download/v2026.10.15-preview/yukina-manga-reader-windows-x64.zip) |
+| Android 平板 | [安装 APK](https://github.com/YushiroYukina/yukina-manga-reader/releases/download/v2026.10.15-preview/yukina-manga-reader-android-0.1.0-alpha.apk) |
+| Apple Silicon Mac | [arm64 应用 ZIP](https://github.com/YushiroYukina/yukina-manga-reader/releases/download/v2026.10.15-preview/yukina-manga-reader-macos-arm64-v1.0.1.zip) |
+
+[查看本次发布与校验文件](https://github.com/YushiroYukina/yukina-manga-reader/releases/tag/v2026.10.15-preview)。
 
 - Windows：下载 `yukina-manga-reader-windows-x64.zip`，完整解压后运行 `yukina-reader.exe`，保留 `_internal` 文件夹。
 - Android：下载 `.apk`，允许该安装来源后安装。更新现有阅读器请直接覆盖安装，保留书库。

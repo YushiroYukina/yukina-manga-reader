@@ -1,3 +1,13 @@
+# 三端下载包发布
+
+发布页： https://github.com/YushiroYukina/yukina-manga-reader/releases/tag/v2026.10.15-preview
+
+Windows 从当前源码重新打包，无用户 data/cache，ZIP 完整性通过，EXE 启动、重复启动复用、窗口可见范围、Tab 沉浸与 Esc 恢复通过。Android 发布现有原签名 APK，保留此前 49 项真机验收边界。
+
+Mac 已在 GitHub macos-15 / arm64 / Python 3.12 重新构建，架构和 ad-hoc 严格签名检查成功；流程记录：https://github.com/YushiroYukina/yukina-manga-reader/actions/runs/38760417934 。云端本次没有执行 Cocoa 人工交互回归，不把云端包当作维护者原有应用包；维护者此前实机验证仍见随包报告。
+
+维护者已选择项目采用 AGPL-3.0-only，许可证与依赖说明随源码及桌面包附带。下文是此前各阶段记录。
+
 # Mac 1.0.1 源码整合
 
 维护者提供已在 MacBook Air M1 / macOS 26.5.1 上部署、打包并实测的完整源码。报告记录 46 项 Cocoa 回归、新独立应用 86 项检查、54 个 Mach-O arm64 与 ad-hoc 签名验证通过。详见 [Mac 最新报告](../macos/docs/VALIDATION_CURRENT.md) 和 [整合说明](../macos/INTEGRATION.md)。
