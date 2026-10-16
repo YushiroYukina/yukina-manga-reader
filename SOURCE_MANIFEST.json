@@ -1,6 +1,7 @@
 {
   ".gitattributes": "d760d103b72a08aa7989047f282db52cb83d5977c7be2fe713eb924470cf13d4",
   ".github/workflows/mac-download.yml": "8d586a66b73b7a1a2a30cb584c8ec6ceeb176f7eb8f15cd7045ad3cbf526661b",
+  ".github/workflows/windows-download.yml": "e9c42c99b15e61c09136b2633bda01e5c1f64d1eb19f855765b99ddf3c09de68",
   ".gitignore": "21086916507195c447630dafa7a165613a6f94c242000bb0ad0ed3e3af5555fe",
   "android/app/src/main/AndroidManifest.xml": "8fa708f99ad9027a1c14a6c937cc2602bc4f343b7a5a864e00c4b285576c0bde",
   "android/app/src/main/assets/licenses/7-Zip-License.txt": "32369594a3a9f7c643d124035120eaa6a7707e75e57c4386ef509f801447bc49",

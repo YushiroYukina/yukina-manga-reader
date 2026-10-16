@@ -1,0 +1,82 @@
+name: Build Windows v1.1 download
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/windows-download.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  windows:
+    runs-on: windows-2025
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: v1.1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          architecture: x64
+      - name: Install dependencies
+        run: python -m pip install -r desktop/requirements.txt PyInstaller==6.22.3
+      - name: Build portable Windows application
+        working-directory: desktop
+        run: python -m PyInstaller --noconfirm yukina-release.spec
+      - name: Verify packaged decoder and create download
+        env:
+          PYTHONUTF8: '1'
+        run: |
+          @'
+          from pathlib import Path
+          import hashlib,json,os,shutil,subprocess,sys,tempfile
+          root=Path.cwd();sys.path[:0]=[str(root/'desktop'),str(root/'desktop/tests')]
+          from test_scan_books import fixtures
+          from PySide6.QtGui import QImage
+          (root/'work').mkdir(exist_ok=True)
+          exe=root/'desktop/dist/yukina-reader/yukina-reader.exe'
+          with tempfile.TemporaryDirectory(dir=root/'work') as temp:
+              folder=Path(temp);images=fixtures(folder)
+              for original,alias in [('scan.cbz','scan.zip'),('scan.rar','scan.cbr'),('scan.7z','scan.cb7')]:
+                  shutil.copyfile(folder/original,folder/alias)
+              sources=[folder/n for n in ['scan.zip','scan.cbz','scan.rar','scan.cbr','scan.7z','scan.cb7']]+[images,images/'page2.png']
+              before={p:hashlib.sha256(p.read_bytes()).digest() for p in folder.rglob('*') if p.is_file()}
+              covers=folder/'covers';covers.mkdir()
+              jobs=[dict(id=str(i),kind='book',source=str(p),output=str(covers/f'{i}.png')) for i,p in enumerate(sources)]
+              env=os.environ.copy();env['PATH']=r'C:\Windows\System32;C:\Windows';env['QT_QPA_PLATFORM']='offscreen'
+              result=subprocess.run([str(exe),'--thumbnail-worker',str(covers)],cwd=folder,env=env,input=''.join(json.dumps(j)+'\n' for j in jobs),capture_output=True,text=True,timeout=120)
+              replies=[json.loads(line) for line in result.stdout.splitlines()]
+              assert result.returncode==0 and len(replies)==8 and all(r.get('ok') for r in replies),result.stdout+result.stderr
+              for i in range(8):
+                  image=QImage(str(covers/f'{i}.png'));assert not image.isNull()
+                  pixel=image.pixelColor(image.width()//2,image.height()//2)
+                  assert pixel.red()>240 and pixel.green()<10 and pixel.blue()<10
+              assert all(hashlib.sha256(p.read_bytes()).digest()==h for p,h in before.items())
+              created={p.relative_to(folder).as_posix() for p in folder.rglob('*') if p.is_file() and p not in before}
+              assert created=={f'covers/{i}.png' for i in range(8)},created
+          out=root/'release-assets';out.mkdir()
+          report={'version':'1.1','packagedExecutable':True,'archiveAndImageCoverChecks':8,'originalHashesUnchanged':True,'extractedPageFiles':0}
+          (out/'windows-build-checks-v1.1.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
+          app=exe.parent
+          for name in ['LICENSE','NOTICE.md','VERSION']:shutil.copyfile(root/name,app/name)
+          shutil.copyfile(root/'docs/RELEASE_v1.1.md',app/'README-v1.1.md')
+          shutil.make_archive(str(out/'yukina-manga-reader-windows-x64-v1.1'),'zip',root_dir=app.parent,base_dir=app.name)
+          print(json.dumps(report))
+          '@ | python -
+      - name: Attach Windows download and update checksum
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PYTHONUTF8: '1'
+        run: |
+          gh release download v1.1 --repo "$env:GITHUB_REPOSITORY" --pattern SHA256SUMS.txt --dir release-assets
+          @'
+          from pathlib import Path
+          import hashlib
+          out=Path('release-assets');name='yukina-manga-reader-windows-x64-v1.1.zip'
+          path=out/'SHA256SUMS.txt'
+          lines=[line for line in path.read_text(encoding='utf-8').splitlines() if not line.endswith(name)]
+          lines.append(hashlib.sha256((out/name).read_bytes()).hexdigest()+'  '+name)
+          path.write_text('\n'.join(lines)+'\n',encoding='utf-8')
+          '@ | python -
+          $files = @(Get-ChildItem -File release-assets | ForEach-Object { $_.FullName })
+          gh release upload v1.1 @files --clobber --repo "$env:GITHUB_REPOSITORY"
