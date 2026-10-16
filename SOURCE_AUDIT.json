@@ -1,7 +1,7 @@
 {
   "date": "2026-10-15",
   "files": 228,
-  "sourceBytes": 1908169,
+  "sourceBytes": 1908767,
   "exclusions": [
     "user books and libraries",
     "cache and screenshots",
@@ -89,7 +89,9 @@
     "version": "1.1",
     "androidLatestInteractiveRerun": "blocked by locked device; prior full 67 passed",
     "macNativeChecks": 56,
-    "macReturnedSourceSHA256": "151210dab709d08674a2b9e08354018e429d66ee7bfad1411bcb8216bfc39ef7"
+    "macReturnedSourceSHA256": "151210dab709d08674a2b9e08354018e429d66ee7bfad1411bcb8216bfc39ef7",
+    "macCloudBuildRun": 38913838003,
+    "macPackagedCoverChecks": 8
   },
   "releasePreparationVersion": "1.1"
 }
