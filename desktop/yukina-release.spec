@@ -1,13 +1,16 @@
 from pathlib import Path
 repo = Path(SPECPATH).parent
+import subprocess, sys
+_decoder=Path(SPECPATH)/'tools/sevenzip'
+if not (_decoder/'7z.exe').is_file():subprocess.run([sys.executable,str(Path(SPECPATH)/'tools/prepare_archives.py')],check=True)
 # -*- mode: python ; coding: utf-8 -*-
 
 
 a = Analysis(
     ['app.py'],
     pathex=[],
-    binaries=[],
-    datas=[('assets','assets'),(str(repo/'LICENSE'),'.'),(str(repo/'NOTICE.md'),'.'),(str(repo/'licenses'),'licenses')],
+    binaries=[(str(_decoder/'7z.exe'),'tools/sevenzip'),(str(_decoder/'7z.dll'),'tools/sevenzip')],
+    datas=[(str(_decoder/'License.txt'),'tools/sevenzip'),('assets','assets'),(str(repo/'LICENSE'),'.'),(str(repo/'NOTICE.md'),'.'),(str(repo/'licenses'),'licenses')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

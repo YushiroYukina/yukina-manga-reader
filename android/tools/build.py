@@ -6,6 +6,9 @@ ROOT=Path(__file__).resolve().parents[1]
 TOOLS=ROOT/'.tools'
 JDK=Path((TOOLS/'jdk-path.txt').read_text(encoding='utf-8').strip())
 SDK=TOOLS/'sdk'; BT=SDK/'build-tools/34.0.0'; ANDROID=SDK/'platforms/android-34/android.jar'
+LIB=TOOLS/'libarchive'; JAR=LIB/'classes.jar'
+if not JAR.is_file():
+    subprocess.run([sys.executable,str(ROOT/'tools/prepare_archives.py')],check=True)
 BUILD=ROOT/'build'; BUILD.mkdir(exist_ok=True)
 env=os.environ.copy(); env['JAVA_HOME']=str(JDK);env['ANDROID_HOME']=str(SDK)
 env['PATH']=str(JDK/'bin')+os.pathsep+env.get('PATH','')
@@ -31,10 +34,12 @@ def package(name,manifest,res,classes,dex,out):
         compiled=BUILD/(name+'-res.zip');run([BT/'aapt2.exe','compile','--dir',res,'-o',compiled])
         run([BT/'aapt2.exe','link','-o',BUILD/(name+'-resources.apk'),'-I',ANDROID,'--manifest',manifest,'--auto-add-overlay',compiled])
     else:run([BT/'aapt2.exe','link','-o',BUILD/(name+'-resources.apk'),'-I',ANDROID,'--manifest',manifest])
-    run([java('java'),'-cp',BT/'lib/d8.jar','com.android.tools.r8.D8','--min-api','26','--lib',ANDROID,'--output',dex,*classes.rglob('*.class')])
+    run([java('java'),'-cp',BT/'lib/d8.jar','com.android.tools.r8.D8','--min-api','26','--lib',ANDROID,'--output',dex,*classes.rglob('*.class'),*([JAR] if name=='app' else [])])
     unsigned=BUILD/(name+'-unsigned.apk');shutil.copy2(BUILD/(name+'-resources.apk'),unsigned)
     with zipfile.ZipFile(unsigned,'a',compression=zipfile.ZIP_DEFLATED) as z:
         for p in dex.glob('*.dex'):z.write(p,p.name)
+        if name=='app':
+            for p in (LIB/'jni').rglob('*.so'):z.write(p,'lib/'+p.relative_to(LIB/'jni').as_posix())
         assets=ROOT/('tests/assets' if name=='tests' else 'app/src/main/assets')
         if assets.exists():
             for p in assets.rglob('*'):
@@ -47,7 +52,7 @@ def package(name,manifest,res,classes,dex,out):
     run([java('java'),'-jar',BT/'lib/apksigner.jar','verify','--verbose',out])
 
 classes=BUILD/'classes'
-compile_java(list((ROOT/'app/src/main/java').rglob('*.java')),classes,str(ANDROID))
+compile_java(list((ROOT/'app/src/main/java').rglob('*.java')),classes,str(ANDROID)+os.pathsep+str(JAR))
 qa='--qa' in sys.argv
 manifest=ROOT/'app/src/main/AndroidManifest.xml'
 if qa:
@@ -56,17 +61,17 @@ if qa:
     app=tree.getroot().find('application'); app.set('{http://schemas.android.com/apk/res/android}label','yukina漫画阅读器 验收')
     app.find('activity').set('{http://schemas.android.com/apk/res/android}name','cn.migi.reader.MainActivity')
     manifest=BUILD/'qa-manifest.xml';tree.write(manifest,encoding='utf-8',xml_declaration=True)
-package('app',manifest,ROOT/'app/src/main/res',classes,BUILD/'dex',ROOT/('dist/Migi-Android-QA.apk' if qa else 'dist/Migi-Android-0.1.0-alpha.apk'))
+package('app',manifest,ROOT/'app/src/main/res',classes,BUILD/'dex',ROOT/('dist/Migi-Android-QA.apk' if qa else 'dist/yukina-reader-android-v1.1.apk'))
 tests=list((ROOT/'tests/java').rglob('*.java'))
 if tests:
     testclasses=BUILD/'host-tests';compile_java(tests,testclasses,str(classes))
     run([java('java'),'-ea','-cp',str(classes)+os.pathsep+str(testclasses),'cn.migi.reader.CoreTests'])
 if '--instrumentation' in sys.argv:
-    tc=BUILD/'android-tests';compile_java(list((ROOT/'tests/android').rglob('*.java')),tc,str(ANDROID)+os.pathsep+str(classes))
+    tc=BUILD/'android-tests';compile_java(list((ROOT/'tests/android').rglob('*.java')),tc,str(ANDROID)+os.pathsep+str(classes)+os.pathsep+str(JAR))
     manifest=ROOT/'tests/AndroidManifest.xml'
     if qa:
         tree=ET.parse(manifest);tree.getroot().set('package','cn.migi.reader.qa.tests')
-        tree.getroot().find('instrumentation').set('{http://schemas.android.com/apk/res/android}targetPackage','cn.migi.reader.qa')
+        for instrumentation in tree.getroot().findall('instrumentation'):instrumentation.set('{http://schemas.android.com/apk/res/android}targetPackage','cn.migi.reader.qa')
         tree.getroot().find('application/provider').set('{http://schemas.android.com/apk/res/android}authorities','cn.migi.reader.qa.tests.documents')
         manifest=BUILD/'qa-tests-manifest.xml';tree.write(manifest,encoding='utf-8',xml_declaration=True)
     package('tests',manifest,None,tc,BUILD/'test-dex',ROOT/('dist/Migi-Android-QA-tests.apk' if qa else 'dist/Migi-Android-tests.apk'))

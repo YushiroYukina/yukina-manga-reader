@@ -6,6 +6,7 @@ from collections import deque
 from pathlib import Path
 from PySide6.QtCore import QObject,Signal,QProcess,QProcessEnvironment,QTimer
 from reader import volumes
+from image_books import image_files
 
 def cover_source(entry):
     if entry.get('cover_path'): return entry['cover_path'],'image'
@@ -34,14 +35,24 @@ class ThumbnailCache(QObject):
         self.watchdog.timeout.connect(self.timeout)
         self.stopping=False
         self._cached_size=None
+        self.folder_sources={}
 
     def identity(self,entry):
         source,kind=cover_source(entry)
         if not source: return None,source,kind
         try:
             p=Path(source).resolve(strict=True); stat=p.stat()
-            if not p.is_file(): return None,source,kind
-            key=hashlib.sha256(json.dumps([str(p),kind,stat.st_mtime_ns,stat.st_size,1],ensure_ascii=True).encode()).hexdigest()
+            if not p.exists(): return None,source,kind
+            fingerprint=[]
+            if p.is_dir():
+                cached=self.folder_sources.get(str(p))
+                if cached is None or cached[0]!=stat.st_mtime_ns:
+                    pages=image_files(p,recursive=False)
+                    if not pages: return None,source,kind
+                    cached=(stat.st_mtime_ns,pages[0],len(pages));self.folder_sources[str(p)]=cached
+                first=cached[1]; stamp=first.stat()
+                fingerprint=[str(first),stamp.st_mtime_ns,stamp.st_size,cached[2]]
+            key=hashlib.sha256(json.dumps([str(p),kind,stat.st_mtime_ns,stat.st_size,1,fingerprint],ensure_ascii=True).encode()).hexdigest()
             return key,str(p),kind
         except OSError: return None,source,kind
 

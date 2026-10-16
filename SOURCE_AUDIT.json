@@ -1,7 +1,7 @@
 {
   "date": "2026-10-15",
-  "files": 183,
-  "sourceBytes": 1568860,
+  "files": 228,
+  "sourceBytes": 1908169,
   "exclusions": [
     "user books and libraries",
     "cache and screenshots",
@@ -13,7 +13,7 @@
   "uploadPerformed": true,
   "licenseChosen": true,
   "macNativeVerified": true,
-  "windowsSnapshotTestsPassed": 46,
+  "windowsSnapshotTestsPassed": 56,
   "androidExistingHostChecks": 24,
   "androidExistingDeviceChecks": 49,
   "androidRebuiltDuringPreparation": false,
@@ -26,8 +26,8 @@
   "displayName": "yukina漫画阅读器",
   "repositoryName": "yukina-manga-reader",
   "documentation": "Features, supported products and usage boundaries expanded",
-  "macSourceVersion": "1.0.1",
-  "macVerificationSource": "maintainer-provided native Mac reports",
+  "macSourceVersion": "1.1",
+  "macVerificationSource": "maintainer returned source: 56 Cocoa checks; app rebuild tracked separately",
   "macNativeVerifiedByMaintainer": true,
   "macNativeVerifiedOnThisWindowsHost": false,
   "macRegressionChecks": 46,
@@ -71,5 +71,25 @@
   "releasePreparation": true,
   "releasePublished": true,
   "releaseTag": "v2026.10.15-preview",
-  "macCloudBuildRun": 38760417934
+  "macCloudBuildRun": 38760417934,
+  "currentChanges": {
+    "date": "2026-10-16",
+    "feature": "archive scan books and images",
+    "published": false,
+    "windowsAutomatedChecks": 56,
+    "windowsPackagedDecoderChecks": 5,
+    "androidHostChecks": 39,
+    "androidNewNativeChecksExecuted": true,
+    "macNewChangesBuilt": false,
+    "macNewChangesNativeVerified": true,
+    "androidNativeChecks": 67,
+    "realTFZipPages": 176,
+    "realTFSourceUnchanged": true,
+    "androidInstalledVersion": "0.2.1-alpha",
+    "version": "1.1",
+    "androidLatestInteractiveRerun": "blocked by locked device; prior full 67 passed",
+    "macNativeChecks": 56,
+    "macReturnedSourceSHA256": "151210dab709d08674a2b9e08354018e429d66ee7bfad1411bcb8216bfc39ef7"
+  },
+  "releasePreparationVersion": "1.1"
 }

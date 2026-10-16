@@ -50,7 +50,7 @@ public final class NativeChecks extends Instrumentation {
         long grantDeadline=SystemClock.elapsedRealtime()+15000;boolean granted=false;
         while(SystemClock.elapsedRealtime()<grantDeadline){try{target.getContentResolver().takePersistableUriPermission(tree,Intent.FLAG_GRANT_READ_URI_PERMISSION);granted=true;break;}catch(SecurityException pending){Thread.sleep(100);}}
         if(!granted)throw new AssertionError("Fixture provider grant timed out");
-        for(String name:test.getAssets().list(""))if(Core.format(name)) {
+        for(String name:test.getAssets().list(""))if(name.endsWith(".pdf")||name.endsWith(".epub")||name.endsWith(".mobi")) {
             Uri uri=DocumentsContract.buildDocumentUriUsingTree(tree,name);byte[] before=hash(uri);
             try(Books.Engine engine=Books.open(target.getContentResolver(),uri,name)){
                 check(engine.count()==(name.endsWith(".mobi")?2:5),"page count "+name);
@@ -58,6 +58,20 @@ public final class NativeChecks extends Instrumentation {
                 Bitmap next=engine.render(1,600);color=next.getPixel(next.getWidth()/2,next.getHeight()/2);check(name.endsWith(".mobi")?Color.blue(color)>230:Color.green(color)>90,"next page "+name);next.recycle();
             }
             check(Arrays.equals(before,hash(uri)),"source unchanged "+name);sources.add(Store.file(name,uri.toString()));
+        }
+        for(String name:new String[]{"scan.zip","scan.rar","scan.7z","unicode.zip"}){
+            Uri uri=DocumentsContract.buildDocumentUriUsingTree(tree,name);byte[] before=hash(uri);
+            try(Books.Engine book=Books.open(target.getContentResolver(),uri,name)){
+                check(book.count()==5,"archive page count "+name);
+                Bitmap b=book.render(0,600);check(Color.red(b.getPixel(10,10))>230&&Color.green(b.getPixel(10,10))<30,"natural first page "+name);b.recycle();
+                b=book.render(4,600);check(Color.red(b.getPixel(10,10))>90&&Color.blue(b.getPixel(10,10))>90,"natural last page "+name);b.recycle();
+            }
+            check(Arrays.equals(before,hash(uri)),"archive unchanged "+name);
+        }
+        JSONObject images=Store.file("散图",DocumentsContract.buildDocumentUriUsingTree(tree,"images").toString());images.put("kind","images");
+        try(Books.Engine book=Books.open(target.getContentResolver(),images)){
+            check(book.count()==2,"image folder is one book with two pages");
+            Bitmap b=book.render(0,600);check(Color.red(b.getPixel(10,10))>230,"image folder natural order");b.recycle();
         }
         Intent intent=new Intent(target,MainActivity.class);intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         ready.putString("stream","READY_UI\n");sendStatus(0,ready);

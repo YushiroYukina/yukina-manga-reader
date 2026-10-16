@@ -35,6 +35,10 @@ public final class CoreTests {
         try{Core.xml("<!DOCTYPE html [<!ENTITY x SYSTEM 'file:///private'>]><html/>".getBytes("UTF-8"));throw new AssertionError("DTD accepted");}catch(IOException expected){passed++;}
         try{Core.resolve("book.opf","../../escape.png");throw new AssertionError("Path escape accepted");}catch(IOException expected){passed++;}
         try{Core.readBounded(new ByteArrayInputStream(new byte[100]),99);throw new AssertionError("Unbounded read");}catch(IOException expected){passed++;}
+        for(String name:new String[]{"a.ZIP","a.cbz","a.RAR","a.cbr","a.7z","a.cb7","a.jpg","a.jpeg","a.png","a.webp","a.bmp","a.gif"})check(Core.format(name),"new format "+name);
+        check(!Core.format("archive.zip.exe"),"unsupported suffix rejected");
+        check(Core.naturalCompare(Core.archivePageKey("page2.png"),Core.archivePageKey("./page10.png"))<0,"mixed archive prefixes sort naturally");
+        check(Core.archivePageKey("././中文//页2.png").equals("中文/页2.png"),"archive path normalization");
         System.out.println("Core tests passed: "+passed);
     }
 }

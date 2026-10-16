@@ -1,4 +1,4 @@
-name: Build Mac download
+name: Build Mac v1.1 download
 on:
   push:
     branches: [main]
@@ -20,19 +20,22 @@ jobs:
         run: python -m pip install -r macos/requirements-mac-build.txt
       - name: Build and verify arm64 and ad-hoc signature
         run: python macos/scripts/build_macos.py
+      - name: Verify archive decoder in the packaged application
+        run: python macos/scripts/check_archive_bundle.py
       - name: Prepare downloadable archive
         run: |
           mkdir -p release-assets
-          cp macos/release/Migi-Mac-arm64-v1.0.1.zip release-assets/yukina-manga-reader-macos-arm64-v1.0.1.zip
+          cp macos/release/Migi-Mac-arm64-v1.1.zip release-assets/yukina-manga-reader-macos-arm64-v1.1.zip
+          cp macos/work/archive-bundle-checks.json release-assets/macos-build-checks-v1.1.json
           cd release-assets
           shasum -a 256 *.zip > macos-SHA256SUMS.txt
       - uses: actions/upload-artifact@v4
         with:
-          name: macos-arm64-download
+          name: macos-arm64-v1.1-download
           path: release-assets/*
-      - name: Attach to draft preview release
+      - name: Attach to v1.1 draft release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release view v2026.10.15-preview --repo "$GITHUB_REPOSITORY" || gh release create v2026.10.15-preview --draft --prerelease --target "$GITHUB_SHA" --title "yukina漫画阅读器 · 三端下载预览" --notes "准备三端安装包，构建中。" --repo "$GITHUB_REPOSITORY"
-          gh release upload v2026.10.15-preview release-assets/* --clobber --repo "$GITHUB_REPOSITORY"
+          gh release view v1.1 --repo "$GITHUB_REPOSITORY" || gh release create v1.1 --draft --target "$GITHUB_SHA" --title "yukina漫画阅读器 v1.1" --notes "三端更新准备中。" --repo "$GITHUB_REPOSITORY"
+          gh release upload v1.1 release-assets/* --clobber --repo "$GITHUB_REPOSITORY"

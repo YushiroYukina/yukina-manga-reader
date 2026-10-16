@@ -15,12 +15,18 @@ import java.util.zip.*;
 /** Read-only page decoding. No temporary book copy and no page disk cache. */
 public final class Books {
     public interface Engine extends Closeable { int count(); Bitmap render(int page,int width) throws Exception; }
+    public static Engine open(ContentResolver resolver,org.json.JSONObject source) throws Exception {
+        if("images".equals(source.optString("kind")))return new ScanBooks.Images(resolver,Uri.parse(source.getString("uri")),true);
+        return open(resolver,Uri.parse(source.getString("uri")),source.getString("title"));
+    }
     public static Engine open(ContentResolver resolver,Uri uri,String title) throws Exception {
         String name=title.toLowerCase(Locale.ROOT);
         if(name.endsWith(".pdf"))return new Pdf(resolver,uri);
         if(name.endsWith(".epub"))return new Epub(resolver,uri);
         if(name.endsWith(".mobi"))return new Mobi(resolver,uri);
-        throw new IOException("只支持 PDF、EPUB、MOBI");
+        if(ScanBooks.archive(name))return new ScanBooks.Packed(resolver,uri);
+        if(ScanBooks.image(name))return new ScanBooks.Images(resolver,uri,false);
+        throw new IOException("请选择图书、扫图压缩包或图片");
     }
     static Bitmap image(byte[] bytes,int width) throws IOException {
         BitmapFactory.Options options=new BitmapFactory.Options(); options.inJustDecodeBounds=true;

@@ -2,7 +2,7 @@
 
 独立安卓原生基础项目，不修改 Windows 阅读器，不迁移 Windows 书库。目标设备为联想小新 Pad Pro 12.7 骁龙 870／Android 14。最低系统 Android 8.0（API 26），编译及目标 API 34。当前为基础开发版，不是完整移植终版。
 
-成品：`dist/Migi-Android-0.1.0-alpha.apk`。使用独立开发签名，可供之后侧载测试；保留 `.tools/development.keystore` 才能使用相同签名继续覆盖安装。2026-10-12 已通过 USB 在小新平板安装并启动正式基础版；真机检查使用独立 cn.migi.reader.qa 包，验收后已移除测试应用，正式书库未混入测试数据。
+成品：`dist/yukina-reader-android-v1.1.apk`。使用独立开发签名，可供之后侧载测试；保留 `.tools/development.keystore` 才能使用相同签名继续覆盖安装。2026-10-12 已通过 USB 在小新平板安装并启动正式基础版；真机检查使用独立 cn.migi.reader.qa 包，验收后已移除测试应用，正式书库未混入测试数据。
 
 ## 已实现的基础功能
 
@@ -54,3 +54,11 @@ python tools/device_verify.py --serial YOUR_DEVICE_SERIAL --physical
 ## 格式与平台边界
 
 文字 EPUB/MOBI、KF8/HuffDic、DRM、ZIP64 等限制仍以此前格式表为准。真实图书大文件、不同厂商分屏/锁屏、持续帧率和全部实际图书兼容性没有全面验证。
+
+## 2026-10-16 扫图格式开发版
+
+新增 ZIP／CBZ、RAR／CBR、7z／CB7、散图文件夹及单张 JPG／PNG／WebP／BMP／GIF（静态首帧）。当前版本 0.2.1-alpha，67 项真机检查及真实 TF 卡 ZIP 验证已通过。详情见项目根目录 docs/SCAN_FORMATS.md（原开发目录见 SCAN_FORMATS.md）。
+
+## v1.1
+
+统一发布版本 1.1（versionCode 4），39 项核心检查通过。补充压缩包混合 ./ 前缀的自然排序，覆盖安装仍沿用原开发签名。上轮完整真机验证 67 项通过；本轮锁屏状态下完成格式解码检查，未重新完成交互测试。

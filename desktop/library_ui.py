@@ -87,7 +87,7 @@ class Covers:
             title=entry['title']; title=title if len(title)<35 else title[:34]+'…'
             painter.drawText(QRectF(25,70,160,135),Qt.AlignmentFlag.AlignCenter|Qt.TextFlag.TextWordWrap,title)
             painter.setFont(QFont('Microsoft YaHei UI',10)); painter.setPen(theme_color('#bdd0ce'))
-            label=f"多卷合辑 · {len(volumes(entry))} 卷" if entry.get('kind')=='folder' else Path(entry['path']).suffix[1:].upper()
+            label=f"多卷合辑 · {len(volumes(entry))} 卷" if entry.get('kind')=='folder' else '图片集' if entry.get('kind')=='images' else Path(entry['path']).suffix[1:].upper()
             painter.drawText(QRectF(24,230,162,25),Qt.AlignmentFlag.AlignCenter,label)
             painter.setFont(QFont('Microsoft YaHei UI',8))
             state='正在提取第一页…' if stamp else '封面源文件缺失'
@@ -118,7 +118,7 @@ class BookCard(QStyledItemDelegate):
         clip=QPainterPath(); clip.addRoundedRect(cover,8,8); painter.save(); painter.setClipPath(clip)
         painter.drawPixmap(cover,self.shelf.covers.get(entry),QRectF(0,0,210,300))
         painter.restore()
-        badge=f"{len(volumes(entry))} 卷" if entry.get('kind')=='folder' else Path(entry['path']).suffix[1:].upper()
+        badge=f"{len(volumes(entry))} 卷" if entry.get('kind')=='folder' else '图片集' if entry.get('kind')=='images' else Path(entry['path']).suffix[1:].upper()
         painter.setFont(QFont('Microsoft YaHei UI',8))
         bw=painter.fontMetrics().horizontalAdvance(badge)+18
         badge_rect=QRectF(cover.left()+8,cover.top()+8,bw,23)
@@ -338,12 +338,12 @@ class LibraryPage(QWidget):
         grouped=entry.get('kind')=='folder'; self.rescan_btn.setVisible(grouped); self.up.setVisible(grouped); self.down.setVisible(grouped); self.use_volume_cover.setVisible(grouped)
         self.description.setText(f"多卷合辑 · {len(volumes(entry))} 卷 · 每卷独立记忆进度" if grouped else '独立图书 · 单个文件')
         source,kind=cover_source(entry)
-        self.cover_note.setText(('自选图片：' if kind=='image' else '第一页封面来源：')+source+('（源文件缺失）' if not source or not Path(source).is_file() else ''))
+        self.cover_note.setText(('自选图片：' if kind=='image' else '第一页封面来源：')+source+('（源文件缺失）' if not source or not Path(source).exists() else ''))
         self.cover_note.setToolTip(self.cover_note.text())
         self.update_stats()
         self.volume_list.clear()
         for volume in volumes(entry):
-            missing=not Path(volume['path']).is_file()
+            missing=not Path(volume['path']).exists()
             progress=f"第 {volume.get('page',0)+1} 页" if volume.get('last_read') or volume.get('page',0)>0 else '未开始'
             if volume.get('total'): progress+=f" / {volume['total']} 页"
             item=QTreeWidgetItem([('⚠ ' if missing else '')+volume['title'],Path(volume['path']).suffix[1:].upper(),'文件缺失' if missing else progress,duration(volume.get('reading_seconds',0)),reading_status(volume)])
@@ -466,7 +466,7 @@ class LibraryPage(QWidget):
     def relocate(self):
         entry=self.current()
         if not entry: return
-        path=QFileDialog.getExistingDirectory(self,'重新定位合辑文件夹') if entry.get('kind')=='folder' else QFileDialog.getOpenFileName(self,'重新定位图书','','图书 (*.pdf *.epub *.mobi)')[0]
+        path=QFileDialog.getExistingDirectory(self,'重新定位合辑文件夹') if entry.get('kind') in ('folder','images') else QFileDialog.getOpenFileName(self,'重新定位图书','','图书 (*.pdf *.epub *.mobi *.zip *.cbz *.rar *.cbr *.7z *.cb7 *.jpg *.jpeg *.png *.webp *.bmp *.gif)')[0]
         if not path: return
         try:
             resolved=str(Path(path).resolve())

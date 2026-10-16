@@ -15,3 +15,8 @@ Dependency sources and license references:
 
 Application corresponding source and build scripts: https://github.com/YushiroYukina/yukina-manga-reader
 Exact dependencies are in each platform's requirements files. Complete AGPL/GPL/LGPL texts accompany this release; dependency-specific notices remain applicable.
+
+
+Archive decoder additions (2026-10-16):
+- Desktop: unmodified 7-Zip 26.04 by Igor Pavlov, launched as a separate helper process. LGPL-2.1-or-later with the unRAR restriction and BSD notices; these components retain their original licenses and are not relicensed as AGPL. Source: https://github.com/ip7z/7zip/tree/26.04 ; official source archive https://github.com/ip7z/7zip/releases/download/26.04/7z2604-src.tar.xz . Readers can replace the helper under tools/sevenzip. Pinned download checksums are in tools/prepare_archives.py.
+- Android: libarchive-android 1.1.6 (Google LLC / Hai Zhang; Apache-2.0), source https://github.com/zhanghai/libarchive-android/tree/v1.1.6 . It bundles libarchive, bzip2, XZ/liblzma, LZ4/xxHash, Zstandard and Mbed TLS, and uses Android zlib. The upstream tag records exact dependency commits via git submodules. Source can be obtained using git clone --branch v1.1.6 --recurse-submodules https://github.com/zhanghai/libarchive-android.git . The corresponding notice files are in licenses/archive and Android APK assets/licenses. Additional dependency licenses remain applicable.

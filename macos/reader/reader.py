@@ -13,7 +13,8 @@ from pathlib import Path
 from urllib.parse import unquote
 import pymupdf
 
-FORMATS = {'.pdf', '.epub', '.mobi'}
+from image_books import IMAGES, ARCHIVES, ImageBook, image_files
+FORMATS = {'.pdf', '.epub', '.mobi'} | IMAGES | ARCHIVES
 READING_STATUSES=('未标记','想读','在读','已读','搁置','弃读')
 
 def reading_status(entry):
@@ -31,14 +32,17 @@ def path_key(path):
 class Book:
     def __init__(self, path):
         self.path = Path(path).resolve(strict=True)
-        if self.path.suffix.lower() not in FORMATS:
-            raise ValueError('只支持 PDF、EPUB、MOBI')
-        self.doc = self.archive = None
+        if not self.path.is_dir() and self.path.suffix.lower() not in FORMATS:
+            raise ValueError('请选择图书、图片或扫图压缩包')
+        self.doc = self.archive = self.image_book = None
         self.mobi_file = None
         self.images = []
-        self.title = self.path.stem
+        self.title = self.path.name if self.path.is_dir() else self.path.stem
         try:
-            if self.path.suffix.lower() == '.epub':
+            if self.path.is_dir() or self.path.suffix.lower() in IMAGES | ARCHIVES:
+                self.image_book = ImageBook(self.path)
+                self.images = list(range(len(self.image_book.pages)))
+            elif self.path.suffix.lower() == '.epub':
                 self._epub()
             elif self.path.suffix.lower() == '.mobi':
                 self._mobi()
@@ -169,7 +173,9 @@ class Book:
     def render(self, index, scale=1.0):
         from PySide6.QtGui import QImage
         if self.images:
-            if self.mobi_file:
+            if self.image_book:
+                data = self.image_book.read(index)
+            elif self.mobi_file:
                 offset, length = self.images[index]
                 self.mobi_file.seek(offset)
                 data = self.mobi_file.read(length)
@@ -184,6 +190,8 @@ class Book:
         return QImage(pix.samples, pix.width, pix.height, pix.stride, QImage.Format.Format_RGB888).copy()
 
     def close(self):
+        if self.image_book:
+            self.image_book.close()
         if self.doc:
             self.doc.close()
         if self.archive:
@@ -224,8 +232,8 @@ class Library:
         added=[]
         for path in paths:
             p = Path(path).resolve()
-            if p.is_file() and p.suffix.lower() in FORMATS and str(p).casefold() not in known:
-                entry={'id':uuid.uuid4().hex,'kind':'file','path':str(p),'title':p.stem,'page':0,'added':time.time()}
+            if (p.is_dir() or p.is_file() and p.suffix.lower() in FORMATS) and str(p).casefold() not in known:
+                entry={'id':uuid.uuid4().hex,'kind':'images' if p.is_dir() else 'file','path':str(p),'title':p.name if p.is_dir() else p.stem,'page':0,'added':time.time()}
                 self.data['books'].append(entry); added.append(entry)
                 known.add(str(p).casefold())
         if save: self.save()
@@ -241,16 +249,19 @@ class Library:
         result=[]
         def failed(error): raise error
         for base, dirs, files in os.walk(root,followlinks=False,onerror=failed):
+            dirs[:] = [d for d in dirs if not d.startswith('.') and d != '__MACOSX']
+            if any(Path(n).suffix.lower() in IMAGES and not n.startswith('.') for n in files): result.append(Path(base))
             for name in files:
                 p=Path(base)/name
-                if p.suffix.lower() in FORMATS: result.append(p)
+                if p.suffix.lower() in FORMATS - IMAGES: result.append(p)
             if not recursive: dirs.clear()
         return sorted(result,key=lambda p:natural_key(p.relative_to(root)))
 
     def import_folder(self, folder, grouped=True, recursive=True, title=None,save=True):
         root=Path(folder).resolve(strict=True)
         paths=self.scan_folder(root,recursive)
-        if not paths: raise ValueError('该文件夹内没有 PDF、EPUB 或 MOBI 图书。')
+        if not paths: raise ValueError('该文件夹内没有支持的图书、压缩包或图片。')
+        if paths == [root]: return self.add([root],save=save)
         if not grouped: return self.add(paths,save=save)
         existing=next((b for b in self.data['books'] if b.get('kind')=='folder' and path_key(b['path'])==str(root).casefold()),None)
         if existing:
@@ -308,11 +319,12 @@ class Library:
                     count=len(self.data['books'])
                     result=self.import_folder(p,grouped,recursive,save=False)
                     added=len(self.data['books'])-count; report['added']+=added
-                    if grouped and not added: report['updated']+=len(result)
-                    elif not grouped and not added: report['skipped']+=1
+                    if not added:
+                        if grouped and result: report['updated']+=len(result)
+                        else: report['skipped']+=1
                 elif p.is_file() and p.suffix.lower() in FORMATS:
                     files.append(p)
-                else: raise ValueError('只支持 PDF、EPUB、MOBI 或图书文件夹')
+                else: raise ValueError('请选择支持的图书、扫图压缩包、图片或文件夹')
             except (OSError,ValueError) as error: report['errors'].append(str(source)+'：'+str(error))
         added_files=self.add(files,save=False)
         report['added']+=len(added_files); report['skipped']+=len(files)-len(added_files)

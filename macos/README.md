@@ -1,12 +1,12 @@
 # 右页 · MIGI
 
-面向 Apple Silicon Mac 的本地漫画阅读器，中文界面，使用 Python、Qt for Python 和 MuPDF。当前版本 **1.0.1**。
+面向 Apple Silicon Mac 的本地漫画阅读器，中文界面，使用 Python、Qt for Python 和 MuPDF。当前统一发布版本 **1.1**。
 
 本仓库整理自已在 MacBook Air M1 / macOS 26.5.1 上运行和打包的 Mac 源码。它不是 Windows 或 Android 发布包；目前不提供经过验证的其他平台构建。
 
 ## 功能
 
-- 无 DRM 的 PDF、EPUB、MOBI；图书按原路径只读，不复制、不整本解压、不缓存阅读页面。
+- 无 DRM 的 PDF、EPUB、MOBI、ZIP／CBZ、RAR／CBR、7z／CB7 及散图；图书按原路径只读，不复制、不整本解压、不缓存阅读页面。
 - 默认日漫右到左、单双页、封面单页、页距、适合窗口／宽度／原尺寸、缩放、跳页及五种翻页效果。
 - 独立书库、每页 48 本、搜索／筛选／排序、独立详情；批量混合文件和文件夹、多卷合辑、自然／自定义卷序、每卷进度、扫描新增与重新定位。
 - 串行封面子进程，只缓存 420×600 封面小图；支持分卷封面、自选图片与清理缓存。
@@ -22,6 +22,7 @@
 ```sh
 python3 -m venv .venv
 .venv/bin/python -m pip install -r requirements-mac-build.txt
+.venv/bin/python reader/tools/prepare_archives.py
 .venv/bin/python reader/app.py
 ```
 
@@ -33,7 +34,7 @@ python3 -m venv .venv
 .venv/bin/python scripts/build_macos.py
 ```
 
-结果是 `dist/Migi.app` 和 `release/Migi-Mac-arm64-v1.0.1.zip`，无需用户安装 Python。脚本检查原生 arm64 环境、调用 PyInstaller、核对包内 Mach-O 架构并验证本地 ad-hoc 签名，使用 macOS `ditto` 保留链接打包。
+结果是 `dist/Migi.app` 和 `release/Migi-Mac-arm64-v1.1.zip`，无需用户安装 Python。脚本检查原生 arm64 环境、调用 PyInstaller、核对包内 Mach-O 架构并验证本地 ad-hoc 签名，使用 macOS `ditto` 保留链接打包。
 
 本地自用签名不等同于 Apple 公证。公开分发前请根据自己的签名、公证和依赖许可安排重新确认发布方案，不要全局关闭 Gatekeeper。
 
@@ -65,3 +66,7 @@ python3 -m venv .venv
 ## 许可证
 
 项目现按 AGPL-3.0-only 发布，详见仓库根目录 LICENSE 和 NOTICE.md。第三方依赖保留各自许可。下载独立应用见仓库 GitHub Releases；本地自用签名不等同 Apple 公证。
+
+## v1.1 验证依据
+
+本次新增格式已由维护者在 Apple Silicon Mac / macOS 26.5.1 完成 56 项 Cocoa 原生回归；返回记录见 ../docs/MAC_FIX_VALIDATION_2026-10-16.md。独立 .app 另由云端构建并验证架构、签名和打包解码器；源代码实机测试不等同于对云端下载应用的人工实机验收。

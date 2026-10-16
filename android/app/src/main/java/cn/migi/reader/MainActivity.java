@@ -95,7 +95,7 @@ public final class MainActivity extends Activity implements ReaderSurface.Listen
                 generateCover(entry);handler.post(()->{coverPending.remove(id);if(!dead&&screen==SHELF&&adapter!=null)adapter.notifyDataSetChanged();});
             });
         }
-        if(store.books().length()==0)page.addView(label("导入本地 PDF、EPUB 或 MOBI 开始阅读。仅记录授权地址，不复制原书。",14,muted));
+        if(store.books().length()==0)page.addView(label("导入 PDF、EPUB、MOBI、ZIP、RAR、7z 或散图文件夹开始阅读。仅记录授权地址，不复制原书。",14,muted));
     }
     final class ShelfAdapter extends BaseAdapter {
         final List<JSONObject> entries=new ArrayList<>();ShelfAdapter(){refresh();}
@@ -118,7 +118,7 @@ public final class MainActivity extends Activity implements ReaderSurface.Listen
     void generateCover(JSONObject entry){
         if(!entry.optString("coverUri").isEmpty()||coverFile(entry).exists())return;
         JSONObject source=entry;JSONArray children=entry.optJSONArray("volumes");if(children!=null&&children.length()>0)source=children.optJSONObject(Math.max(0,Math.min(children.length()-1,entry.optInt("coverVolume"))));
-        try(Books.Engine book=Books.open(getContentResolver(),Uri.parse(source.getString("uri")),source.getString("title"))){
+        try(Books.Engine book=Books.open(getContentResolver(),source)){
             Bitmap image=book.render(0,420),cover=Bitmap.createBitmap(420,600,Bitmap.Config.RGB_565);Canvas canvas=new Canvas(cover);canvas.drawColor(Color.WHITE);float scale=Math.min(420f/image.getWidth(),600f/image.getHeight());float w=image.getWidth()*scale,h=image.getHeight()*scale;canvas.drawBitmap(image,null,new RectF((420-w)/2,(600-h)/2,(420+w)/2,(600+h)/2),new Paint(Paint.FILTER_BITMAP_FLAG));
             File target=coverFile(entry),tmp=new File(target.getParentFile(),target.getName()+".tmp");try(FileOutputStream out=new FileOutputStream(tmp)){if(!cover.compress(Bitmap.CompressFormat.PNG,100,out))throw new IOException("封面保存失败");}if(!tmp.renameTo(target))tmp.delete();image.recycle();cover.recycle();
         }catch(Exception ignored){} // Failure leaves a placeholder, not a false cover.
@@ -204,7 +204,7 @@ public final class MainActivity extends Activity implements ReaderSurface.Listen
     }
     void importEntries(List<JSONObject> entries,int skipped)throws Exception {int added=store.add(entries);List<JSONObject> accepted=new ArrayList<>();for(JSONObject entry:entries)if(store.find(entry.optString("id"))!=null)accepted.add(entry);showShelf();Toast.makeText(this,"新增 "+added+" 本，重复 "+(entries.size()-added)+" 项，跳过 "+skipped+" 项",Toast.LENGTH_LONG).show();imports.execute(()->{for(JSONObject entry:accepted){if(dead)break;generateCover(entry);handler.post(()->{if(!dead&&screen==SHELF&&adapter!=null)adapter.notifyDataSetChanged();});}});}
     void scanFolder(Uri tree,boolean grouped,boolean recursive){ProgressDialog progress=ProgressDialog.show(this,"扫描文件夹","读取授权目录，不复制图书…",true,false);
-        imports.execute(()->{try {List<JSONObject> files=new ArrayList<>();walk(tree,DocumentsContract.getTreeDocumentId(tree),files,recursive,0);files.sort((a,b)->Core.naturalCompare(a.optString("title"),b.optString("title")));if(files.isEmpty())throw new IOException("该目录没有 PDF、EPUB 或 MOBI");List<JSONObject> entries=files;if(grouped){JSONObject group=Store.file(name(DocumentsContract.buildDocumentUriUsingTree(tree,DocumentsContract.getTreeDocumentId(tree))),tree.toString());group.put("kind","folder");group.put("volumes",new JSONArray(files));group.put("currentVolume",0);entries=Collections.singletonList(group);}List<JSONObject> result=entries;handler.post(()->{progress.dismiss();if(dead)return;try{importEntries(result,0);}catch(Exception e){error("导入失败",e);}});}catch(Exception e){handler.post(()->{progress.dismiss();if(!dead)error("扫描失败",e);});}});
+        imports.execute(()->{try {List<JSONObject> files=new ArrayList<>();walk(tree,DocumentsContract.getTreeDocumentId(tree),files,recursive,0);files.sort((a,b)->Core.naturalCompare(a.optString("title"),b.optString("title")));if(files.isEmpty())throw new IOException("该目录没有支持的图书、压缩包或图片");List<JSONObject> entries=files;if(grouped&&!(files.size()==1&&"images".equals(files.get(0).optString("kind")))){JSONObject group=Store.file(name(DocumentsContract.buildDocumentUriUsingTree(tree,DocumentsContract.getTreeDocumentId(tree))),tree.toString());group.put("kind","folder");group.put("volumes",new JSONArray(files));group.put("currentVolume",0);entries=Collections.singletonList(group);}List<JSONObject> result=entries;handler.post(()->{progress.dismiss();if(dead)return;try{importEntries(result,0);}catch(Exception e){error("导入失败",e);}});}catch(Exception e){handler.post(()->{progress.dismiss();if(!dead)error("扫描失败",e);});}});
     }
     List<JSONObject> collectFolders(Uri tree)throws Exception {return collectFolders(tree,DocumentsContract.getTreeDocumentId(tree));}
     List<JSONObject> collectFolders(Uri tree,String parentId)throws Exception {
@@ -224,16 +224,30 @@ public final class MainActivity extends Activity implements ReaderSurface.Listen
         result.sort((a,b)->Core.naturalCompare(a.optString("title"),b.optString("title")));return result;
     }
     void scanCollections(Uri tree){ProgressDialog progress=ProgressDialog.show(this,"扫描多卷书库","按子文件夹整理作品，不复制图书…",true,false);
-        imports.execute(()->{try{List<JSONObject> groups=collectFolders(tree);handler.post(()->{progress.dismiss();if(dead)return;if(groups.isEmpty()){error("未找到合辑",new IOException("请选择包含作品子文件夹的上一级目录；各作品文件夹内需有 PDF、EPUB 或 MOBI。"));return;}
+        imports.execute(()->{try{List<JSONObject> groups=collectFolders(tree);handler.post(()->{progress.dismiss();if(dead)return;if(groups.isEmpty()){error("未找到合辑",new IOException("请选择包含作品子文件夹的上一级目录；各作品文件夹内可放图书、压缩包或散图文件夹。"));return;}
             boolean[] chosen=new boolean[groups.size()];Arrays.fill(chosen,true);String[] titles=new String[groups.size()];for(int i=0;i<titles.length;i++)titles[i]=groups.get(i).optString("title")+" · "+groups.get(i).optJSONArray("volumes").length()+" 卷";
             AlertDialog dialog=new AlertDialog.Builder(this).setTitle("选择导入合辑（"+groups.size()+" 部）").setMultiChoiceItems(titles,chosen,(d,i,value)->chosen[i]=value).setPositiveButton("导入所选",(d,w)->{List<JSONObject> entries=new ArrayList<>();for(int i=0;i<chosen.length;i++)if(chosen[i])entries.add(groups.get(i));try{if(!entries.isEmpty())importEntries(entries,0);}catch(Exception e){error("批量导入失败",e);}}).setNeutralButton("全选 / 全不选",null).setNegativeButton("取消",null).create();dialog.setOnShowListener(d->dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(v->{boolean all=true;for(boolean selected:chosen)all&=selected;for(int i=0;i<chosen.length;i++){chosen[i]=!all;dialog.getListView().setItemChecked(i,!all);}}));dialog.show();
         });}catch(Exception e){handler.post(()->{progress.dismiss();if(!dead)error("批量扫描失败",e);});}});
     }
     void walk(Uri tree,String id,List<JSONObject> files,boolean recursive,int depth)throws Exception {
         if(depth>12||files.size()>5000)throw new IOException("目录过深或图书超过 5000 个，请分文件夹导入");
-        Uri children=DocumentsContract.buildChildDocumentsUriUsingTree(tree,id);
+        Uri children=DocumentsContract.buildChildDocumentsUriUsingTree(tree,id);boolean images=false;
         try(Cursor cursor=getContentResolver().query(children,new String[]{DocumentsContract.Document.COLUMN_DOCUMENT_ID,DocumentsContract.Document.COLUMN_DISPLAY_NAME,DocumentsContract.Document.COLUMN_MIME_TYPE},null,null,null)){
-            if(cursor==null)throw new IOException("文件夹读取权限不可用");while(cursor.moveToNext()){String child=cursor.getString(0),title=cursor.getString(1),mime=cursor.getString(2);if(DocumentsContract.Document.MIME_TYPE_DIR.equals(mime)){if(recursive)walk(tree,child,files,true,depth+1);}else if(Core.format(title)){if(files.size()>=5000)throw new IOException("图书超过 5000 个，请分文件夹导入");files.add(Store.file(title,DocumentsContract.buildDocumentUriUsingTree(tree,child).toString()));}}
+            if(cursor==null)throw new IOException("文件夹读取权限不可用");
+            while(cursor.moveToNext()){
+                String child=cursor.getString(0),title=cursor.getString(1),mime=cursor.getString(2);
+                if(title.startsWith(".")||title.equals("__MACOSX"))continue;
+                if(DocumentsContract.Document.MIME_TYPE_DIR.equals(mime)){if(recursive)walk(tree,child,files,true,depth+1);}
+                else if(ScanBooks.page(title))images=true;
+                else if(Core.format(title)){
+                    if(files.size()>=5000)throw new IOException("图书超过 5000 个，请分文件夹导入");
+                    files.add(Store.file(title,DocumentsContract.buildDocumentUriUsingTree(tree,child).toString()));
+                }
+            }
+        }
+        if(images){
+            Uri folder=DocumentsContract.buildDocumentUriUsingTree(tree,id);
+            JSONObject book=Store.file(name(folder),folder.toString());book.put("kind","images");files.add(book);
         }
     }
 
@@ -241,7 +255,7 @@ public final class MainActivity extends Activity implements ReaderSurface.Listen
     void openBook(JSONObject entry,int index){
         tick();paused=false;Books.Engine old=engine;engine=null;running=false;owner=entry;JSONArray children=entry.optJSONArray("volumes");volume=children==null?entry:children.optJSONObject(Math.max(0,Math.min(children.length()-1,index)));if(volume==null){error("无法打开",new IOException("合辑没有分卷"));return;}try{entry.put("currentVolume",index);}catch(Exception ignored){}
         int token=++generation;busy=true;if(surface!=null)surface.clear();showReader();JSONObject requested=volume;
-        worker.execute(()->{close(old);try{Books.Engine opened=Books.open(getContentResolver(),Uri.parse(requested.getString("uri")),requested.getString("title"));handler.post(()->{if(dead||token!=generation){close(opened);return;}engine=opened;busy=false;display(Math.min(opened.count()-1,requested.optInt("page")),false);});}catch(Exception e){handler.post(()->{if(!dead&&token==generation){busy=false;showDetail(entry);error("无法打开图书",e);}});}});
+        worker.execute(()->{close(old);try{Books.Engine opened=Books.open(getContentResolver(),requested);handler.post(()->{if(dead||token!=generation){close(opened);return;}engine=opened;busy=false;display(Math.min(opened.count()-1,requested.optInt("page")),false);});}catch(Exception e){handler.post(()->{if(!dead&&token==generation){busy=false;showDetail(entry);error("无法打开图书",e);}});}});
     }
     void releaseBook(){tick();generation++;Books.Engine previous=engine;engine=null;owner=volume=null;if(surface!=null)surface.clear();worker.execute(()->close(previous));running=false;}
     static void close(Books.Engine engine){if(engine!=null)try{engine.close();}catch(Exception ignored){}}

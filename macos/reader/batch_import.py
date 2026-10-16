@@ -68,7 +68,7 @@ class BatchImportDialog(QDialog):
         self.count.setText(f'待导入 {self.items.count()} 项 · 可用 Command / Shift 多选')
         self.buttons.button(QDialogButtonBox.StandardButton.Ok).setEnabled(self.items.count()>0)
     def choose_files(self):
-        paths,_=QFileDialog.getOpenFileNames(self,MULTI_FILE_TITLE,'','漫画图书 (*.pdf *.epub *.mobi)')
+        paths,_=QFileDialog.getOpenFileNames(self,MULTI_FILE_TITLE,'','漫画图书 (*.pdf *.epub *.mobi *.zip *.cbz *.rar *.cbr *.7z *.cb7 *.jpg *.jpeg *.png *.webp *.bmp *.gif)')
         restore_after_native_dialog(self)
         self.add_sources(paths)
     def choose_folders(self):

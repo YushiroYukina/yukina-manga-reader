@@ -1,37 +1,11 @@
-# Mac 1.0.1 整合说明
+# Mac v1.1 整合与验证
 
-本目录为 yukina漫画阅读器的 macOS 独立实现，来自维护者提供的 Migi-GitHub-source-v1.0.1.zip。原工程与打包产物名称仍为“右页 · MIGI / Migi.app”，保留这些名称和数据目录以对应已经实机验证的构建；仓库统一项目名称为 yukina漫画阅读器。
+基于维护者交付的已验证 Mac 工程，保留原生快捷键、Cocoa 对话框、全屏、Retina、单实例及独立数据目录。v1.1 接入 ZIP／CBZ、RAR／CBR、7z／CB7、散图文件夹和单张图片。
 
-源 ZIP SHA-256：`f908a2bde4beceddd718916cdb8bd9c5cff6381b08389ce2888bbdfca758ee87`。导入前核验 77 项原始文件哈希，全部通过。整合时仅将部分 Python/SVG 文件的 CRLF 统一为 LF，以符合随包 .gitattributes，并重建本目录清单；未改动业务逻辑。Windows / Android 源码保持各自目录。
+2026-10-16 收到修正版源码，原包 SHA-256：151210dab709d08674a2b9e08354018e429d66ee7bfad1411bcb8216bfc39ef7。输入包已验证外层 104 项、Mac 内层 83 项哈希。业务修改为 image_books.py 的页序比较和 reader.py 的重复导入统计，新增五项回归；其余为记录与清单。
 
-## 已提供的 Mac 实测记录
+维护者在 Apple Silicon / macOS 26.5.1（25F80）完成 56 项 Cocoa 原生回归，未重新构建独立应用或做新增 frozen 阅读检查。原始记录完整保留于 ../docs/MAC_FIX_VALIDATION_2026-10-16.md。
 
-维护者确认已部署和实机验证。随包 [最新验证报告](docs/VALIDATION_CURRENT.md) 记录 MacBook Air M1 / macOS 26.5.1（25F80）：
+v1.1 的 Mac 应用由 GitHub Apple Silicon 环境重新打包，检查 arm64、ad-hoc 签名与内置解码器；云端打包和辅助进程缩略图检查不等同本次新下载应用的人工实机通读。内部应用名 Migi.app 与原 Mac 数据路径保留，外部发布编号统一为 v1.1。
 
-- 46 项 Cocoa 原生回归通过。
-- 新构建独立 .app 的 86 项验收检查通过。
-- 54 个 Mach-O 均支持 arm64，本地 ad-hoc 严格签名检查通过。
-- 独立应用子进程管道与第一页封面检查通过。
-
-这些是提供方在 Mac 的验证记录。本次 Windows 整合只核对源 ZIP、清单、语法、目录结构和发布内容，没有在 Windows 重新执行 Cocoa、codesign 或 Mac .app 构建。
-
-## 运行与打包
-
-在 Apple Silicon Mac 上，先进入本目录 macos，再按 [Mac README](README.md) 运行。使用原生 arm64 Python 3.12，最低声明 macOS 14，已实测版本为 macOS 26.5.1。
-
-```sh
-cd macos
-python3 -m venv .venv
-.venv/bin/python -m pip install -r requirements-mac-build.txt
-.venv/bin/python reader/app.py
-# 独立构建，必须在 Mac 执行
-.venv/bin/python scripts/build_macos.py
-```
-
-源码包没有附带 dist/Migi.app 或可运行的 Mac 发布 ZIP。GitHub 的 Download ZIP 是源码，不是安装包；后续已通过 GitHub Apple Silicon 构建生成应用 ZIP，并在 [三端下载预览](https://github.com/YushiroYukina/yukina-manga-reader/releases/tag/v2026.10.15-preview) 发布；该云端构建仅检查 arm64 与签名，不替代上文维护者的人工实机验收。若需要向其他人分发独立应用，应上传 Mac 实际生成的包并另行核对签名、公证和许可。
-
-## 数据与范围
-
-默认书库为 `~/Applications/Migi/Migi-data/data/library.json`，只读引用用户本地图书，允许清理封面缩略图，不复制图书或生成页面磁盘缓存。可用 MIGI_DATA_ROOT 指定独立测试目录。Mac、Windows 和 Android 书库各自独立，不自动迁移或云同步。
-
-实体第二显示器和实体触控板手感仍未完成硬件验收；最低 macOS 版本不是逐版本实测保证。详见 [历史验证与边界](docs/VALIDATION.md)。本地 ad-hoc 签名不等于 Apple 公证，项目许可仍待作者选择。
+源码不包含下载的解码器二进制；source 运行前执行 reader/tools/prepare_archives.py，独立应用构建时会自动准备并随包携带。原书只读，只允许封面小图缓存。

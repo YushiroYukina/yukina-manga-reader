@@ -287,7 +287,7 @@ class Window(QMainWindow):
             self.counter.setText('未打开图书'); self.update_volume_buttons()
 
     def import_files(self):
-        paths, _ = QFileDialog.getOpenFileNames(self, '批量选择图书（Ctrl / Shift 多选）', '', '漫画图书 (*.pdf *.epub *.mobi)')
+        paths, _ = QFileDialog.getOpenFileNames(self, '批量选择图书（Ctrl / Shift 多选）', '', '漫画图书 (*.pdf *.epub *.mobi *.zip *.cbz *.rar *.cbr *.7z *.cb7 *.jpg *.jpeg *.png *.webp *.bmp *.gif)')
         if paths: self.library.add(paths); self.refresh()
 
     def import_batch(self,initial_paths=None):

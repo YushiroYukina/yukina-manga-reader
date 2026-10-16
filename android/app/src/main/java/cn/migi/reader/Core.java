@@ -25,7 +25,15 @@ public final class Core {
         return String.format(Locale.ROOT,"%02d:%02d:%02d",s/3600,s/60%60,s%60);
     }
     public static boolean format(String name) {
-        String s=name.toLowerCase(Locale.ROOT); return s.endsWith(".pdf")||s.endsWith(".epub")||s.endsWith(".mobi");
+        String s=name.toLowerCase(Locale.ROOT); return s.matches(".*\\.(pdf|epub|mobi|zip|cbz|rar|cbr|7z|cb7|jpe?g|png|webp|bmp|gif)$");
+    }
+    public static String archivePageKey(String name) {
+        StringBuilder result=new StringBuilder();
+        for(String part:name.replace('\\','/').split("/")) {
+            if(part.isEmpty()||part.equals("."))continue;
+            if(result.length()>0)result.append('/');result.append(part);
+        }
+        return result.toString();
     }
     public static int naturalCompare(String a,String b) {
         Matcher x=Pattern.compile("\\d+|\\D+").matcher(a.toLowerCase(Locale.ROOT));

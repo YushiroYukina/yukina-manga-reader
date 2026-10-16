@@ -1,11 +1,15 @@
+from pathlib import Path
+import subprocess, sys
+_decoder=Path(SPECPATH)/'tools/sevenzip'
+if not (_decoder/'7z.exe').is_file(): subprocess.run([sys.executable,str(Path(SPECPATH)/'tools/prepare_archives.py')],check=True)
 # -*- mode: python ; coding: utf-8 -*-
 
 
 a = Analysis(
     ['app.py'],
     pathex=[],
-    binaries=[],
-    datas=[('assets','assets')],
+    binaries=[(str(_decoder/'7z.exe'),'tools/sevenzip'),(str(_decoder/'7z.dll'),'tools/sevenzip')],
+    datas=[(str(_decoder/'License.txt'),'tools/sevenzip'),(str(Path(SPECPATH).parent/'licenses'),'licenses'),('assets','assets')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

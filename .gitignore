@@ -37,3 +37,13 @@ Thumbs.db
 !android/tests/assets/测试漫画.pdf
 !android/tests/assets/测试漫画.epub
 !android/tests/assets/测试漫画.mobi
+
+# Downloaded runtime decoders and generated scan fixtures
+**/tools/sevenzip/
+*.rar
+*.7z
+!android/tests/assets/scan.zip
+!android/tests/assets/scan.rar
+!android/tests/assets/scan.7z
+
+!android/tests/assets/unicode.zip

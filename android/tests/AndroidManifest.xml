@@ -7,4 +7,5 @@
         </provider>
     </application>
     <instrumentation android:name="cn.migi.reader.NativeChecks" android:targetPackage="cn.migi.reader" android:label="MIGI Android 14 native checks"/>
+    <instrumentation android:name="cn.migi.reader.RealStorageChecks" android:targetPackage="cn.migi.reader" android:label="Read-only real storage checks"/>
 </manifest>

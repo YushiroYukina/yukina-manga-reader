@@ -1,24 +1,24 @@
 # yukina漫画阅读器
 
-面向日漫的本地漫画阅读器。默认从右向左阅读，支持本地 PDF、EPUB、MOBI，以沉浸阅读、多卷书库和原文件直接读取为主要设计方向。
+面向日漫的本地漫画阅读器。默认从右向左阅读，支持本地 PDF、EPUB、MOBI、ZIP／CBZ、RAR／CBR、7z／CB7 和散图，以沉浸阅读、多卷书库和原文件直接读取为主要设计方向。
 
-适合已经拥有本地漫画文件、希望在 Windows、Mac 电脑或 Android 平板上管理和阅读的用户。当前提供 Windows 源码、Android 平板基础版和已在 Apple Silicon Mac 实机验证的 macOS 1.0.1 源码，各平台格式支持与交互有所不同。
+适合已经拥有本地漫画文件、希望在 Windows、Mac 电脑或 Android 平板上管理和阅读的用户。当前版本为 **v1.1**，提供 Windows、Android 与 Apple Silicon Mac 的源码和下载包。各平台采用独立书库。
 
 ## 安装包下载
 
-请前往 **[GitHub Releases 下载页](https://github.com/YushiroYukina/yukina-manga-reader/releases)**，展开 Assets，按系统选择。**三端预览包已发布，不需要安装 Python。** 也可以直接点击下面的对应包：
+请前往 **[GitHub Releases 下载页](https://github.com/YushiroYukina/yukina-manga-reader/releases)**，展开 Assets，按系统选择。**v1.1 三端下载包已发布，不需要安装 Python。** 也可以直接点击下面的对应包：
 
 | 平台 | 下载 |
 | --- | --- |
-| Windows 11 x64 | [便携 ZIP](https://github.com/YushiroYukina/yukina-manga-reader/releases/download/v2026.10.15-preview/yukina-manga-reader-windows-x64.zip) |
-| Android 平板 | [安装 APK](https://github.com/YushiroYukina/yukina-manga-reader/releases/download/v2026.10.15-preview/yukina-manga-reader-android-0.1.0-alpha.apk) |
-| Apple Silicon Mac | [arm64 应用 ZIP](https://github.com/YushiroYukina/yukina-manga-reader/releases/download/v2026.10.15-preview/yukina-manga-reader-macos-arm64-v1.0.1.zip) |
+| Windows 11 x64 | [便携 ZIP](https://github.com/YushiroYukina/yukina-manga-reader/releases/download/v1.1/yukina-manga-reader-windows-x64-v1.1.zip) |
+| Android 平板 | [安装 APK](https://github.com/YushiroYukina/yukina-manga-reader/releases/download/v1.1/yukina-manga-reader-android-v1.1.apk) |
+| Apple Silicon Mac | [arm64 应用 ZIP](https://github.com/YushiroYukina/yukina-manga-reader/releases/download/v1.1/yukina-manga-reader-macos-arm64-v1.1.zip) |
 
-[查看本次发布与校验文件](https://github.com/YushiroYukina/yukina-manga-reader/releases/tag/v2026.10.15-preview)。
+[查看本次发布与校验文件](https://github.com/YushiroYukina/yukina-manga-reader/releases/tag/v1.1)。
 
-- Windows：下载 `yukina-manga-reader-windows-x64.zip`，完整解压后运行 `yukina-reader.exe`，保留 `_internal` 文件夹。
+- Windows：下载 `yukina-manga-reader-windows-x64-v1.1.zip`，完整解压后运行 `yukina-reader.exe`，保留 `_internal` 文件夹。
 - Android：下载 `.apk`，允许该安装来源后安装。更新现有阅读器请直接覆盖安装，保留书库。
-- Apple Silicon Mac：下载 `yukina-manga-reader-macos-arm64-v1.0.1.zip`，解压得到 `Migi.app`。此包为本地 ad-hoc 签名，未经 Apple 公证；如果被系统拦截，可按系统“隐私与安全性”提示处理，不要全局关闭安全机制。Intel Mac 不属于此包适配范围。
+- Apple Silicon Mac：下载 `yukina-manga-reader-macos-arm64-v1.1.zip`，解压得到 `Migi.app`。此包为本地 ad-hoc 签名，未经 Apple 公证；如果被系统拦截，可按系统“隐私与安全性”提示处理，不要全局关闭安全机制。Intel Mac 不属于此包适配范围。
 
 不要点击绿色 Code → Download ZIP 来寻找安装包。
 
@@ -73,7 +73,7 @@ Android 支持实时跟手：从中央 30% 区域之外起拖，页面随手指�
 | Android 手机 | 暂无专门布局验收 | 当前以平板体验为主要目标，手机小屏布局与手势需要进一步适配 |
 | MacBook Air M1 / Apple Silicon Mac | macOS 1.0.1 源码已整合；维护者已部署并实机验证 | MacBook Air M1 / macOS 26.5.1（25F80）；原生 arm64 Python 3.12，最低声明 macOS 14；46 项 Cocoa 回归与独立应用 86 项检查通过，其他机型/系统及实体多屏仍需验证 |
 
-三个平台使用各自独立的书库，不自动迁移或同步。Mac 1.0.1 已从维护者交付的完整源码包整合，原工程与 .app 名称仍为 MIGI，以保留已验证构建的对应关系；详见 [Mac 整合与实测说明](macos/INTEGRATION.md)。
+三个平台使用各自独立的书库，不自动迁移或同步。Mac v1.1 基于维护者返回并通过 56 项 Cocoa 原生回归的修正版源码整合，原工程与 .app 名称仍为 MIGI，以保留已验证构建的对应关系；详见 [Mac 整合与实测说明](macos/INTEGRATION.md)。
 
 ## 文件格式与使用范围
 
@@ -83,6 +83,8 @@ Android 支持实时跟手：从中央 30% 区域之外起拖，页面随手指�
 | --- | --- | --- |
 | PDF | 通过 PyMuPDF 读取本地文件 | 系统 PdfRenderer；要求可寻址的本地来源，无密码 |
 | EPUB | 按书籍阅读顺序读取图片，文字内容有基础固定尺寸排版 | 主要支持图片漫画；支持标准 XHTML 声明，暂不支持文字排版、ZIP64、DRM |
+| ZIP／CBZ、RAR／CBR、7z／CB7 | 自带 7-Zip，当前页读取到内存 | 内置 libarchive，SAF 直读内部存储与 TF 卡 |
+| 散图文件夹／单张图片 | JPG／JPEG、PNG、WebP、BMP、GIF 静态首帧 | 同左；文件夹图片作为一本书 |
 | MOBI | 包含 MOBI6 图片记录读取与 MuPDF 后备，复杂 Kindle 布局兼容性有限 | 主要支持 MOBI6 无压缩 / PalmDOC 压缩的图片漫画；暂不支持 HuffDic、KF8 / AZW3、文字排版或 DRM |
 
 适用场景：个人本地漫画收藏、单行本和多卷作品管理、电脑 / 平板离线阅读、阅读进度与时间记录。项目不提供在线漫画资源、下载服务或跨设备云同步，也不提供 DRM 解密。请使用自己拥有合法使用权的文件；仓库不附带商业漫画。
@@ -101,7 +103,7 @@ Windows 将书库数据与可清理封面存放在程序目录；当前实现禁
 | --- | --- |
 | [desktop/](desktop/) | Windows Python / PySide6 / PyMuPDF 源码、测试及打包配置 |
 | [android/](android/) | Android Java 原生平板阅读器、Windows 构建工具及独立真机测试 |
-| [macos/](macos/) | Mac 1.0.1 完整独立源码、原生适配、构建脚本及实测报告 |
+| [macos/](macos/) | Mac v1.1 完整独立源码、原生适配、构建脚本及实测报告 |
 | [docs/](docs/) | 验证记录、GitHub 使用指南与许可说明 |
 
 ### 从源码启动 Windows 端
@@ -110,6 +112,7 @@ Windows 将书库数据与可清理封面存放在程序目录；当前实现禁
 cd desktop
 python -m venv .venv
 .venv\Scripts\python.exe -m pip install -r requirements.txt
+.venv\Scripts\python.exe tools/prepare_archives.py
 .venv\Scripts\python.exe app.py
 ```
 
@@ -120,10 +123,16 @@ Android 构建与侧载见 [安卓说明](android/README.md)，Mac 运行与构�
 
 ## 验证与许可
 
-当前 Windows 源码 46 项测试通过；Android 最近一轮已有 24 项主机检查与 49 项真机检查通过。Mac 随包报告记录 46 项 Cocoa 原生回归、独立应用 86 项检查、54 个 Mach-O arm64 与 ad-hoc 签名核验通过；该部分来自维护者的 Mac 实测，本次 Windows 整合未重新执行。以上检查覆盖具体样本和交互，不代表所有设备、图书与系统版本都兼容。详见 [验证说明](docs/VALIDATION.md)。
+Windows v1.1 的 56 项自动回归通过；Android v1.1 的 39 项主机检查通过，最近一轮完整真机验收包含 67 项检查及真实 TF 卡 176 页 ZIP 验证。Mac 返回源码的 56 项 Cocoa 原生回归通过（维护者在 M1 / macOS 26.5.1 运行）；v1.1 Mac 下载应用另由 GitHub Apple Silicon 环境重新构建并检查架构、签名和包内压缩包解码器。云端构建不等同本次下载应用的人工实机通读。详见 [Mac 修复验证记录](docs/MAC_FIX_VALIDATION_2026-10-16.md) 和 [安卓真机记录](docs/ANDROID_DEVICE_SCANS_2026-10-16.md)。
 
-本仓库不包含用户图书、个人书库、截图、缓存、SDK/JDK、虚拟环境或签名私钥；android/tests/assets 的三份图书是人工生成的纯色测试样本。
+本仓库不包含用户图书、个人书库、截图、缓存、SDK/JDK、虚拟环境或签名私钥；android/tests/assets 的文档、压缩包和图片均为程序生成的纯色测试样本。
 
 项目源码及发布采用 **AGPL-3.0-only**，完整条款见 [LICENSE](LICENSE)。PyMuPDF / MuPDF 与 Qt / PySide6 有各自依赖许可，见 [许可说明](docs/LICENSING.md)。
 
 维护此源码快照后可运行 `python tools/verify_source.py` 核对内容清单；原开发目录与此仓库不自动同步。
+
+## v1.1 更新
+
+新增压缩包和散图支持，修复中文路径识别、混合 ./ 前缀页序和重复导入散图文件夹的统计。保持原书只读，不整包解压，不生成页面磁盘缓存。详细规则见 [扫图格式说明](docs/SCAN_FORMATS.md)。
+
+首个公开版本统一称为 **v1.0**；保留 [原发布页和日期标签](https://github.com/YushiroYukina/yukina-manga-reader/releases/tag/v2026.10.15-preview)，避免旧下载链接失效。当前统一发布版本为 v1.1；Mac 早期工程内部版本 1.0.1 不代表另一次三端发布。
