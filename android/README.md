@@ -1,8 +1,20 @@
-# yukina漫画阅读器 Android 0.1.0-alpha
+# yukina漫画阅读器 Android 1.1.1
+
+## 安卓交互更新 · 1.1.1（2026-10-22）
+
+- 两个相邻方向的页面仅在内存预读，预读位图总预算 32 MiB；回弹复用预览，翻页复用旧页。扫图纹理按显示尺寸缩小。Android 10 及以上的书籍效果使用两个可复用 GPU 图层；其他效果直接通过硬件 Canvas 绘制，避免移入画面的内容被图层裁掉。旧系统保留 Canvas 路径。本次不复制原书、不生成页面磁盘缓存。
+- 翻页全程绘制不透明页间隙，防止透出底层图片。平移和覆盖均使前后页面同时向相反方向移动；覆盖旧页移动距离为新页的 70%。
+- 阅读外观 → 翻页动画，进入独立单选页。页间距、阅读方向与主题保留在上一级。
+- 图书详情采用封面、阅读摘要与可筛选分卷列表；每卷右侧 ⋮ 菜单包含阅读、状态、设为总封面及移除。整书操作也收在右侧 ⋮ 中。
+- 小新 Pad Pro 12.7 骁龙 870 / Android 14：39 项主机检查、90 项真机检查全部通过，包括软件与实际 GPU 画面、进入页和退出页同时可见、双页间隙、预读复用、回弹、横竖屏、计时、格式解码、移除及源文件只读检查。原签名覆盖安装成功（versionCode 5），现有书库保留。
+- 有限性能样本：实际 TF 卡 EPUB、横屏同一位置，每轮 12 次 650 ms 同半屏拖动回弹，使用系统 gfxinfo。旧版书籍效果中位数 11 ms、P95 15 ms、超期帧 11/546；最终版复测中位数 9 ms、P95 21 ms、超期帧 9/545。最终版此前另一轮中位数 6 ms、P95 15 ms、超期帧 3/534。覆盖最终复测中位数 6 ms、P95 8 ms、超期帧 2/494。中位耗时有所改善，但书籍效果仍有慢帧，尾部耗时有波动，不能宣称完全消除卡顿或推广到全部图书和设备。
+- 初次完整 UI 检查因锁屏超时；解锁后重跑完成。新增 GPU 内容检查曾检出平移图层进入内容缺失，已改为直接 Canvas 路径并完整重跑通过。Android 10 以下仅保留兼容代码路径，本次未在旧系统实测。
+
+本次 Android 独立小版本发布；Windows 与 macOS 版本未变。安装包、源码包与校验文件见 GitHub Release： https://github.com/YushiroYukina/yukina-manga-reader/releases/tag/android-v1.1.1
 
 独立安卓原生基础项目，不修改 Windows 阅读器，不迁移 Windows 书库。目标设备为联想小新 Pad Pro 12.7 骁龙 870／Android 14。最低系统 Android 8.0（API 26），编译及目标 API 34。当前为基础开发版，不是完整移植终版。
 
-成品：`dist/yukina-reader-android-v1.1.apk`。使用独立开发签名，可供之后侧载测试；保留 `.tools/development.keystore` 才能使用相同签名继续覆盖安装。2026-10-12 已通过 USB 在小新平板安装并启动正式基础版；真机检查使用独立 cn.migi.reader.qa 包，验收后已移除测试应用，正式书库未混入测试数据。
+成品：`dist/yukina-reader-android-v1.1.1.apk`。安装包使用项目开发签名；只有持有本地 `.tools/development.keystore` 才能生成可覆盖安装的同签名版本。2026-10-12 已通过 USB 在小新平板安装并启动正式基础版；真机检查使用独立 cn.migi.reader.qa 包，验收后已移除测试应用，正式书库未混入测试数据。
 
 ## 已实现的基础功能
 
@@ -33,32 +45,30 @@
 
 首次使用从系统选择器授权具体图书目录即可；安卓 14 可能限制授权整个存储根目录，因此建议选内部存储或 TF 卡内的 `Manga` 子文件夹。卸载会删除应用元数据和应用专用封面，并释放 URI 授权；原图书由用户目录持有，不由应用删除。
 
-## 构建与验证
+## 本机构建
 
-当前构建脚本在 Windows 使用 Python 标准库、便携 JDK 21 和 Android SDK 34；不是 Gradle 工程。
+项目使用 Java + Android 原生 View，不依赖第三方阅读 SDK，不需要 Gradle 下载整套依赖。
 
 ```powershell
 python tools/bootstrap.py
-$env:JAVA_TOOL_OPTIONS='-Xms32m -Xmx256m'
 python tools/build.py
-# 可选独立测试 APK
-python tools/build.py --instrumentation --qa
-python tools/device_verify.py --serial YOUR_DEVICE_SERIAL --physical
+# 构建独立安卓验收 APK：
+python tools/build.py --instrumentation
 ```
 
-首次 bootstrap 会下载 SDK/JDK，使用相应厂商许可。正常 APK 不包含 tests/assets 的纯色测试样本。
-构建工具自动生成独立开发签名；现有签名不在仓库内。新机器生成的新签名不能覆盖旧签名安装，切勿卸载阅读器来绕过此问题（卸载会丢失应用书库数据）。原开发密钥应离线单独保管。
+Python 只使用标准库。JDK、SDK、开发签名、构建输出均位于项目 D 盘目录。构建脚本使用官方 AAPT2、D8、zipalign、apksigner，设置独立临时目录，处理中文路径并运行主机端规则测试。打包本身不会连接设备。
 
-最近一轮已有 24 项主机检查、49 项真机检查通过；见 ../docs/VALIDATION.md。克隆本仓库后没有自动连接或清空设备的动作。
+`tests/assets` 是独立生成的纯色 PDF／EPUB／MOBI 测试样本，不是用户图书；只打进测试 APK，不打进普通阅读器 APK。先使用 `python tools/build.py --instrumentation --qa` 构建独立验收应用，再运行 `python tools/device_verify.py --serial 明确设备序列号 --physical`。脚本只清空独立 QA 包；不清空或写入正式 cn.migi.reader 书库。原文件哈希、格式解码、横竖屏、浮层像素、计时、目录授权和持久化等 24 项已通过真机检查。真实 TF 卡及系统文件选择器的手动操作仍待验证。
 
-## 格式与平台边界
+## 仍待完善／验证
 
-文字 EPUB/MOBI、KF8/HuffDic、DRM、ZIP64 等限制仍以此前格式表为准。真实图书大文件、不同厂商分屏/锁屏、持续帧率和全部实际图书兼容性没有全面验证。
+- 软件模拟器启动失败，现已通过 USB 真机运行完成 24 项检查；正式应用已成功安装启动。系统文件选择器手动交互、真实图书大文件及实际 TF 卡仍需继续验证。
+- 小新平板已连接；失焦计时与主动暂停通过，分屏／锁屏、系统重启后授权恢复及厂商系统限制仍需进一步实测。
+- 文字型 EPUB／MOBI、特殊 Kindle 格式、重新定位失效 URI、文件夹增量扫描、卷序调整、统计 UI 的进一步美化属于后续迭代。
+- 书籍动画是基础透视效果，尚未达到桌面版本的纸张投影细节。
+
+技术依据：[Storage Access Framework](https://developer.android.com/training/data-storage/shared/documents-files)、[PdfRenderer](https://developer.android.com/reference/android/graphics/pdf/PdfRenderer)、[官方 SDK 命令行工具](https://developer.android.com/tools)。
 
 ## 2026-10-16 扫图格式开发版
 
-新增 ZIP／CBZ、RAR／CBR、7z／CB7、散图文件夹及单张 JPG／PNG／WebP／BMP／GIF（静态首帧）。当前版本 0.2.1-alpha，67 项真机检查及真实 TF 卡 ZIP 验证已通过。详情见项目根目录 docs/SCAN_FORMATS.md（原开发目录见 SCAN_FORMATS.md）。
-
-## v1.1
-
-统一发布版本 1.1（versionCode 4），39 项核心检查通过。补充压缩包混合 ./ 前缀的自然排序，覆盖安装仍沿用原开发签名。上轮完整真机验证 67 项通过；本轮锁屏状态下完成格式解码检查，未重新完成交互测试。
+新增 ZIP／CBZ、RAR／CBR、7z／CB7、散图文件夹及单张 JPG／PNG／WebP／BMP／GIF（静态首帧）。当时版本 0.2.1-alpha，67 项真机检查及真实 TF 卡 ZIP 验证已通过。详情见项目根目录 docs/SCAN_FORMATS.md（原开发目录见 SCAN_FORMATS.md）。

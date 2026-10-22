@@ -61,7 +61,7 @@ if qa:
     app=tree.getroot().find('application'); app.set('{http://schemas.android.com/apk/res/android}label','yukina漫画阅读器 验收')
     app.find('activity').set('{http://schemas.android.com/apk/res/android}name','cn.migi.reader.MainActivity')
     manifest=BUILD/'qa-manifest.xml';tree.write(manifest,encoding='utf-8',xml_declaration=True)
-package('app',manifest,ROOT/'app/src/main/res',classes,BUILD/'dex',ROOT/('dist/Migi-Android-QA.apk' if qa else 'dist/yukina-reader-android-v1.1.apk'))
+package('app',manifest,ROOT/'app/src/main/res',classes,BUILD/'dex',ROOT/('dist/Migi-Android-QA.apk' if qa else 'dist/yukina-reader-android-v1.1.1.apk'))
 tests=list((ROOT/'tests/java').rglob('*.java'))
 if tests:
     testclasses=BUILD/'host-tests';compile_java(tests,testclasses,str(classes))

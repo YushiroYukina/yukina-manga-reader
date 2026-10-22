@@ -37,7 +37,12 @@ public final class Books {
         options.inJustDecodeBounds=false; options.inSampleSize=sample;
         options.inPreferredConfig=Bitmap.Config.RGB_565;
         Bitmap bitmap=BitmapFactory.decodeByteArray(bytes,0,bytes.length,options);
-        if(bitmap==null)throw new IOException("图片解码失败"); return bitmap;
+        if(bitmap==null)throw new IOException("图片解码失败");
+        // Decode off the UI thread, then keep only screen-sized textures in RAM.
+        // Oversized scans otherwise upload and transform several times more pixels every frame.
+        float scale=Math.min(1,Math.min(Math.max(512,Math.min(width,1800))/(float)bitmap.getWidth(),3200f/bitmap.getHeight()));
+        if(scale<1){Bitmap fitted=Bitmap.createScaledBitmap(bitmap,Math.max(1,Math.round(bitmap.getWidth()*scale)),Math.max(1,Math.round(bitmap.getHeight()*scale)),true);if(fitted!=bitmap)bitmap.recycle();bitmap=fitted;}
+        return bitmap;
     }
     static final class Pdf implements Engine {
         final PdfRenderer renderer;

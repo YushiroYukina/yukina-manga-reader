@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="cn.migi.reader" android:versionCode="4" android:versionName="1.1">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="cn.migi.reader" android:versionCode="5" android:versionName="1.1.1">
     <uses-sdk android:minSdkVersion="26" android:targetSdkVersion="34" />
     <application android:label="yukina漫画阅读器" android:icon="@drawable/ic_launcher" android:theme="@style/AppTheme" android:allowBackup="false" android:largeHeap="false" android:supportsRtl="true">
         <activity android:name=".MainActivity" android:exported="true" android:resizeableActivity="true" android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboardHidden">
