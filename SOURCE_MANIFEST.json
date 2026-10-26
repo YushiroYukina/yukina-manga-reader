@@ -559,5 +559,5 @@
   "online/windows/tools/package_windows_update.py": "c847b55a121dbfc55d5ee05e90960307a8ca92564c8d2d6b55e380c07872957f",
   "online/windows/tools/probe_common_sources.py": "2c43b02a0e37063c97810058e53f12a33f7fe9a5450fdc653d400f3f732f2527",
   "online/windows/tools/verify_source.py": "39a0d6f9d19d25994ed438ec91b9b3131d2ea0aa9842e8a03bb31a63b5d9e4a5",
-  "tools/verify_source.py": "02da5863cd2c96478dc9fb330a76a940f12316e9b6cf7a074efca539bf5651d5"
+  "tools/verify_source.py": "99a7ad8344317ebd72d89f655503c6d11825c08002867058adbd20d97d10c744"
 }

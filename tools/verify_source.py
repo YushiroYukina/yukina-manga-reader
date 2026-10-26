@@ -6,7 +6,9 @@ manifest=json.loads((root/'SOURCE_MANIFEST.json').read_text(encoding='utf-8'))
 errors=[]
 for name,expected in manifest.items():
  p=root/name
- if not p.is_file() or hashlib.sha256(p.read_bytes()).hexdigest()!=expected:errors.append('Missing or changed: '+name)
+ content=p.read_bytes() if p.is_file() else b''
+ if p.suffix.lower() in ('.bat','.cmd'):content=content.replace(b'\r\n',b'\n')
+ if not p.is_file() or hashlib.sha256(content).hexdigest()!=expected:errors.append('Missing or changed: '+name)
 allowed={'android/tests/assets/测试漫画.pdf','android/tests/assets/测试漫画.epub','android/tests/assets/测试漫画.mobi','android/tests/assets/scan.zip','android/tests/assets/scan.rar','android/tests/assets/scan.7z','android/tests/assets/unicode.zip'}
 for p in root.rglob('*'):
  if not p.is_file() or '.git' in p.relative_to(root).parts:continue
