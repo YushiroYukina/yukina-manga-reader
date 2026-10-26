@@ -47,3 +47,14 @@ Thumbs.db
 !android/tests/assets/scan.7z
 
 !android/tests/assets/unicode.zip
+
+# Explicit synthetic Android fixtures in independently versioned online source
+!online/android/android/tests/assets/测试漫画.pdf
+!online/android/android/tests/assets/测试漫画.epub
+!online/android/android/tests/assets/测试漫画.mobi
+!online/android/android/tests/assets/scan.zip
+!online/android/android/tests/assets/scan.rar
+!online/android/android/tests/assets/scan.7z
+!online/android/android/tests/assets/unicode.zip
+**/online-data/
+**/source-backups/

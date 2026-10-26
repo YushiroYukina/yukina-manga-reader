@@ -13,7 +13,7 @@ for p in root.rglob('*'):
  name=p.relative_to(root).as_posix()
  if any(x in p.relative_to(root).parts for x in ('.tools','.venv','data','cache','build','dist')):errors.append('Generated/private path: '+name)
  if p.suffix.lower() in ('.key','.keystore','.jks','.pfx','.p12','.exe','.apk'):errors.append('Private key or binary: '+name)
- if p.suffix.lower() in ('.pdf','.epub','.mobi','.zip','.cbz','.rar','.cbr','.7z','.cb7') and name not in allowed:errors.append('Unexpected book: '+name)
+ if p.suffix.lower() in ('.pdf','.epub','.mobi','.zip','.cbz','.rar','.cbr','.7z','.cb7') and name not in allowed and not (name.startswith('online/android/') and name[len('online/android/'):] in allowed):errors.append('Unexpected book: '+name)
  if name not in manifest and name not in ('SOURCE_MANIFEST.json','SOURCE_AUDIT.json'):errors.append('Unlisted file: '+name)
  if p.suffix in ('.py','.spec','.template'):ast.parse(p.read_text(encoding='utf-8-sig'),filename=name)
  if p.suffix in ('.xml','.svg'):ET.parse(p)

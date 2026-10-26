@@ -1,0 +1,14 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="cn.yukina.online" android:versionCode="5" android:versionName="0.1.4-android-preview">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-sdk android:minSdkVersion="26" android:targetSdkVersion="34" />
+    <application android:label="yukina漫画阅读器·在线版" android:usesCleartextTraffic="true" android:icon="@drawable/ic_launcher" android:theme="@style/AppTheme" android:allowBackup="false" android:largeHeap="false" android:supportsRtl="true">
+        <service android:name="cn.migi.reader.OnlineDownloadService" android:foregroundServiceType="dataSync" android:exported="false" />
+        <activity android:name="cn.migi.reader.MainActivity" android:exported="true" android:resizeableActivity="true" android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboardHidden">
+            <intent-filter><action android:name="android.intent.action.MAIN"/><category android:name="android.intent.category.LAUNCHER"/></intent-filter>
+        </activity>
+    </application>
+</manifest>

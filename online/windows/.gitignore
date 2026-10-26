@@ -1,0 +1,14 @@
+.tools/
+.venv/
+__pycache__/
+*.pyc
+build/
+dist/
+release/
+online-data/
+work/
+desktop/qa-temp/
+*.keystore
+*.jks
+*.apk
+*.idsig

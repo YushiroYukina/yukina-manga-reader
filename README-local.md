@@ -1,0 +1,138 @@
+# yukina漫画阅读器
+
+面向日漫的本地漫画阅读器。默认从右向左阅读，支持本地 PDF、EPUB、MOBI、ZIP／CBZ、RAR／CBR、7z／CB7 和散图，以沉浸阅读、多卷书库和原文件直接读取为主要设计方向。
+
+适合已经拥有本地漫画文件、希望在 Windows、Mac 电脑或 Android 平板上管理和阅读的用户。当前版本为 **v1.1**，提供 Windows、Android 与 Apple Silicon Mac 的源码和下载包。各平台采用独立书库。
+
+## 安装包下载
+
+请前往 **[GitHub Releases 下载页](https://github.com/YushiroYukina/yukina-manga-reader/releases)**，展开 Assets，按系统选择。**v1.1 三端下载包已发布，不需要安装 Python。** 也可以直接点击下面的对应包：
+
+| 平台 | 下载 |
+| --- | --- |
+| Windows 11 x64 | [便携 ZIP](https://github.com/YushiroYukina/yukina-manga-reader/releases/download/v1.1/yukina-manga-reader-windows-x64-v1.1.zip) |
+| Android 平板 | [安装 APK](https://github.com/YushiroYukina/yukina-manga-reader/releases/download/v1.1/yukina-manga-reader-android-v1.1.apk) |
+| Apple Silicon Mac | [arm64 应用 ZIP](https://github.com/YushiroYukina/yukina-manga-reader/releases/download/v1.1/yukina-manga-reader-macos-arm64-v1.1.zip) |
+
+[查看本次发布与校验文件](https://github.com/YushiroYukina/yukina-manga-reader/releases/tag/v1.1)。
+
+- Windows：下载 `yukina-manga-reader-windows-x64-v1.1.zip`，完整解压后运行 `yukina-reader.exe`，保留 `_internal` 文件夹。
+- Android：下载 `.apk`，允许该安装来源后安装。更新现有阅读器请直接覆盖安装，保留书库。
+- Apple Silicon Mac：下载 `yukina-manga-reader-macos-arm64-v1.1.zip`，解压得到 `Migi.app`。此包为本地 ad-hoc 签名，未经 Apple 公证；如果被系统拦截，可按系统“隐私与安全性”提示处理，不要全局关闭安全机制。Intel Mac 不属于此包适配范围。
+
+不要点击绿色 Code → Download ZIP 来寻找安装包。
+
+## 主要功能与特色
+
+### 原文件直接读取
+
+导入时记录文件路径或安卓系统授权地址，阅读时直接访问原文件。不复制整本图书、不预先解压全书、不生成阅读页面磁盘缓存。软件仍会保存必要的书库、进度、设置与阅读历史，并生成可清理的封面缩略图。
+
+移出书库只删除书库记录，不修改或删除漫画文件。Android 支持移出单卷、整个多卷合辑、合辑内某一卷，也可清空书库；移除记录后历史阅读时长保留。
+
+### 为日漫安排的阅读布局
+
+默认右到左，可切换方向；支持封面单页、单双页、缩放、跳页和页间距。Android 按横竖屏自动切换：横屏双页、竖屏单页，打开图书即进入沉浸阅读。
+
+阅读区中央 30% 用作控件入口。Android 沉浸阅读中点击此处可呼出或收起上下浮层，浮层覆盖漫画，不改变页面大小；放大后可拖动查看细节。Windows 提供鼠标、键盘快捷键及适合窗口、适合宽度等布局。
+
+### 书籍动画与实时拖动翻页
+
+可选书籍、平移、覆盖、淡入淡出或无动画。书籍效果采用固定书脊、单侧书页投影与纸边阴影；平移让前后页面一同移动，覆盖让新页从一侧盖住当前页。
+
+Android 支持实时跟手：从中央 30% 区域之外起拖，页面随手指移动；松手时进入另一半屏幕则补完翻页，未越过中线则回弹。每次手势最多翻一次，完成后才更新阅读进度。中央起拖不翻页，放大拖动用于平移页面。选择无动画时，拖动仍提供位移反馈。
+
+### 独立书库与多卷管理
+
+书库在独立页面中管理，提供封面、搜索、书籍详情、分卷目录及继续阅读。
+
+- 单文件可独立建书，也可把一个文件夹作为一本多卷合辑，按自然卷号排序。
+- Windows 支持多文件、多文件夹混合导入，并在确认列表中选择合辑或独立建书。
+- Android 可选择一个父目录，将其直接子文件夹分别识别为不同作品，预览后多选或全选批量导入；各作品内可递归扫描分卷。
+- Android 支持内部存储与外置 TF 卡，通过系统选择器授权目录；TF 卡入口显示挂载状态。
+- 默认取第一页生成封面缩略图。合辑可选择某一卷作总封面，也可自选图片。
+- 支持想读、在读、已读、搁置、弃读及自定义状态。读到末页可确认标为已读；合辑全部分卷已读后，再确认整部作品的状态。
+
+### 阅读时长与每日统计
+
+记录每本书、各分卷及全局累计阅读时长，可主动暂停。统计页可按周、月、年查看每日趋势、活跃天数、阅读时长排行及指定日期的各书用时，不记录一天内的小时分布。
+
+计时规则存在平台差异：Windows 沉浸阅读期间不因失去焦点暂停；Android 阅读界面仍可见时继续计时，主动暂停、离开阅读页、完全后台或锁屏时暂停。跨午夜会拆分到对应日期。
+
+### 多色主题
+
+提供鼠尾草绿、海湾蓝、紫藤、玫瑰、琥珀和暖纸白六套主题。主题调整界面与漫画周围背景，不改变原漫画像素颜色。
+
+## 适配产品与系统
+
+| 平台 / 产品 | 当前状态 | 使用条件与适配范围 |
+| --- | --- | --- |
+| Windows 电脑 | 已有可运行版本；当前源码 46 项回归通过 | 本机 Windows 11 环境验证，适合鼠标和键盘操作；其他 Windows 版本尚未全面验证 |
+| 联想小新 Pad Pro 12.7 骁龙版（骁龙 870 / TB371FC） | 已在真机安装和验证 | Android 14，适配横竖屏、触控、沉浸阅读、TF 卡及跟手翻页 |
+| 其他 Android 平板 | 可作为后续侧载测试对象 | 最低声明 Android 8.0 / API 26，目标 API 34；最低版本声明不代表每款设备均已实测，性能及文件授权行为需具体设备验证 |
+| Android 手机 | 暂无专门布局验收 | 当前以平板体验为主要目标，手机小屏布局与手势需要进一步适配 |
+| MacBook Air M1 / Apple Silicon Mac | macOS 1.0.1 源码已整合；维护者已部署并实机验证 | MacBook Air M1 / macOS 26.5.1（25F80）；原生 arm64 Python 3.12，最低声明 macOS 14；46 项 Cocoa 回归与独立应用 86 项检查通过，其他机型/系统及实体多屏仍需验证 |
+
+三个平台使用各自独立的书库，不自动迁移或同步。Mac v1.1 基于维护者返回并通过 56 项 Cocoa 原生回归的修正版源码整合，原工程与 .app 名称仍为 MIGI，以保留已验证构建的对应关系；详见 [Mac 整合与实测说明](macos/INTEGRATION.md)。
+
+## 文件格式与使用范围
+
+主要面向无 DRM 的本地漫画、扫描版和图片型电子书。下表的桌面格式能力同时适用于 Windows 与 Mac 源码实现；Mac 原生快捷键、Retina 渲染、数据目录及对话框适配见 [Mac 说明](macos/README.md)。不同格式并不意味着所有电子书版本与排版都能兼容。
+
+| 格式 | Windows / Mac 桌面端 | Android 端 |
+| --- | --- | --- |
+| PDF | 通过 PyMuPDF 读取本地文件 | 系统 PdfRenderer；要求可寻址的本地来源，无密码 |
+| EPUB | 按书籍阅读顺序读取图片，文字内容有基础固定尺寸排版 | 主要支持图片漫画；支持标准 XHTML 声明，暂不支持文字排版、ZIP64、DRM |
+| ZIP／CBZ、RAR／CBR、7z／CB7 | 自带 7-Zip，当前页读取到内存 | 内置 libarchive，SAF 直读内部存储与 TF 卡 |
+| 散图文件夹／单张图片 | JPG／JPEG、PNG、WebP、BMP、GIF 静态首帧 | 同左；文件夹图片作为一本书 |
+| MOBI | 包含 MOBI6 图片记录读取与 MuPDF 后备，复杂 Kindle 布局兼容性有限 | 主要支持 MOBI6 无压缩 / PalmDOC 压缩的图片漫画；暂不支持 HuffDic、KF8 / AZW3、文字排版或 DRM |
+
+适用场景：个人本地漫画收藏、单行本和多卷作品管理、电脑 / 平板离线阅读、阅读进度与时间记录。项目不提供在线漫画资源、下载服务或跨设备云同步，也不提供 DRM 解密。请使用自己拥有合法使用权的文件；仓库不附带商业漫画。
+
+### 存储与容量边界
+
+Android 使用系统文件授权，不需要“所有文件访问”权限；普通阅读器 APK 没有联网权限。TF 卡必须正常挂载，通常应授权卡内 Manga 等子目录，不能依赖授权整个卡根目录。源文件移动、卡被拔出或授权失效后，书库中的原引用可能无法继续读取。
+
+Android 扫描限制为递归深度 12、每批最多 5000 卷；单个图片条目有 32 MiB 的内存保护上限。大文件性能、连续动画帧率和全部真实图书兼容性仍需进一步测试。
+
+Windows 将书库数据与可清理封面存放在程序目录；当前实现禁止将封面缓存写入 C 盘。Android 的元数据位于应用私有目录，封面位于应用专用目录；卸载会删除应用书库、历史与设置，原图书仍保留。覆盖更新 Android 必须使用与已安装版本一致的签名。
+
+## 项目结构与使用入口
+
+| 目录 | 内容 |
+| --- | --- |
+| [desktop/](desktop/) | Windows Python / PySide6 / PyMuPDF 源码、测试及打包配置 |
+| [android/](android/) | Android Java 原生平板阅读器、Windows 构建工具及独立真机测试 |
+| [macos/](macos/) | Mac v1.1 完整独立源码、原生适配、构建脚本及实测报告 |
+| [docs/](docs/) | 验证记录、GitHub 使用指南与许可说明 |
+
+### 从源码启动 Windows 端
+
+```powershell
+cd desktop
+python -m venv .venv
+.venv\Scripts\python.exe -m pip install -r requirements.txt
+.venv\Scripts\python.exe tools/prepare_archives.py
+.venv\Scripts\python.exe app.py
+```
+
+测试：在 desktop 目录执行 `.venv\Scripts\python.exe -m unittest discover -s tests -v`。
+打包需另装 PyInstaller，再执行 `python -m PyInstaller --noconfirm Migi.spec`。内部文件名 Migi 为历史工程名；start.bat 用于启动打包版本。
+
+Android 构建与侧载见 [安卓说明](android/README.md)，Mac 运行与构建见 [Mac 说明](macos/README.md) 和 [整合说明](macos/INTEGRATION.md)。可直接运行的成品通过 GitHub Releases 分发；Download ZIP / Source code 是源码，不是安装包。
+
+## 验证与许可
+
+Windows v1.1 的 56 项自动回归通过；Android v1.1 的 39 项主机检查通过，最近一轮完整真机验收包含 67 项检查及真实 TF 卡 176 页 ZIP 验证。Mac 返回源码的 56 项 Cocoa 原生回归通过（维护者在 M1 / macOS 26.5.1 运行）；v1.1 Mac 下载应用另由 GitHub Apple Silicon 环境重新构建并检查架构、签名和包内压缩包解码器。云端构建不等同本次下载应用的人工实机通读。详见 [Mac 修复验证记录](docs/MAC_FIX_VALIDATION_2026-10-16.md) 和 [安卓真机记录](docs/ANDROID_DEVICE_SCANS_2026-10-16.md)。
+
+本仓库不包含用户图书、个人书库、截图、缓存、SDK/JDK、虚拟环境或签名私钥；android/tests/assets 的文档、压缩包和图片均为程序生成的纯色测试样本。
+
+项目源码及发布采用 **AGPL-3.0-only**，完整条款见 [LICENSE](LICENSE)。PyMuPDF / MuPDF 与 Qt / PySide6 有各自依赖许可，见 [许可说明](docs/LICENSING.md)。
+
+维护此源码快照后可运行 `python tools/verify_source.py` 核对内容清单；原开发目录与此仓库不自动同步。
+
+## v1.1 更新
+
+新增压缩包和散图支持，修复中文路径识别、混合 ./ 前缀页序和重复导入散图文件夹的统计。保持原书只读，不整包解压，不生成页面磁盘缓存。详细规则见 [扫图格式说明](docs/SCAN_FORMATS.md)。
+
+首个公开版本统一称为 **v1.0**；保留 [原发布页和日期标签](https://github.com/YushiroYukina/yukina-manga-reader/releases/tag/v2026.10.15-preview)，避免旧下载链接失效。当前统一发布版本为 v1.1；Mac 早期工程内部版本 1.0.1 不代表另一次三端发布。

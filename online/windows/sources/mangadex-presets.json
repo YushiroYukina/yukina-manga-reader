@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "sources": [
+    {"id":"mangadex-zh","name":"MangaDex · 中文","type":"mangadex","base_url":"https://api.mangadex.org","language":"zh","enabled":true},
+    {"id":"mangadex-ja","name":"MangaDex · 日文","type":"mangadex","base_url":"https://api.mangadex.org","language":"ja","enabled":true},
+    {"id":"mangadex-en","name":"MangaDex · 英文","type":"mangadex","base_url":"https://api.mangadex.org","language":"en","enabled":true}
+  ]
+}

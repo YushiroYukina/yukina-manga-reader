@@ -1,0 +1,53 @@
+{
+  "revision": 3,
+  "sources": [
+    {
+      "id": "mangadex-zh",
+      "name": "MangaDex · 中文",
+      "type": "mangadex",
+      "base_url": "https://api.mangadex.org",
+      "language": "zh",
+      "enabled": true
+    },
+    {
+      "id": "manhuagui-zh",
+      "name": "漫画柜 · 中文",
+      "type": "manhuagui",
+      "base_url": "https://www.manhuagui.com",
+      "language": "zh",
+      "enabled": true
+    },
+    {
+      "id": "mangapill-en",
+      "name": "MangaPill · 英文",
+      "type": "mangapill",
+      "base_url": "https://mangapill.com",
+      "language": "en",
+      "enabled": true
+    },
+    {
+      "id": "baozimh-org-zh",
+      "name": "包子漫畫.org · 中文",
+      "type": "goda",
+      "base_url": "https://baozimh.org",
+      "language": "zh",
+      "enabled": true
+    },
+    {
+      "id": "comicabc-zh",
+      "name": "ComicABC · 中文公开作品",
+      "type": "comicabc",
+      "base_url": "https://www.comicabc.com",
+      "language": "zh",
+      "enabled": true
+    },
+    {
+      "id": "mangakatana-en",
+      "name": "MangaKatana · 英文",
+      "type": "mangakatana",
+      "base_url": "https://mangakatana.com",
+      "language": "en",
+      "enabled": true
+    }
+  ]
+}

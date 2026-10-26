@@ -1,0 +1,54 @@
+{
+  "version": "0.1.4-android-preview",
+  "date": "2026-10-26",
+  "scope": "Android-only update; Windows/Mac product code unchanged",
+  "device": {
+    "model": "Lenovo TB371FC / Snapdragon 870",
+    "android": "15",
+    "firmware": "google/lineage_arm64_bvN4/tdgsi_arm64_ab:15/BP1A.250505.005/eng.andrew:userdebug/release-keys",
+    "note": "Current connected system is a Lineage Android 15 GSI; not original Android 14 ZUI."
+  },
+  "apkSha256": "8d9b036e2795d3e69afdadba3cd17ff0b53bf2478794c618400b5e358fa237e1",
+  "coreTests": 39,
+  "javaProtocolTests": 63,
+  "nativeChecks": [
+    "mixed search returned 77 results; failed sources did not hide successful results",
+    "source enable/disable worked and all original enabled flags restored",
+    "source dropdown removed from discovery",
+    "three quality presets available inside immersive reading menu",
+    "preloading enabled by default",
+    "MangaPill first chapter rendered and navigated to next double-page spread",
+    "actual removable TF-card directory selected through system picker",
+    "24 downloaded TF-card pages matched manifest SHA-256",
+    "downloaded chapter opened with Wi-Fi disabled",
+    "global cache browser showed only downloaded book and no new-download/resume actions",
+    "undownloaded library book excluded from global cache inventory",
+    "new Chinese source opened actual 120-page chapter",
+    "MangaKatana opened actual chapter and next spread",
+    "updated library distinguishes same-title books by source",
+    "installed final APK matches build SHA-256"
+  ],
+  "nativeCheckCount": 15,
+  "storage": {
+    "removable": true,
+    "selectedParent": "TF card / YukinaOnline",
+    "generatedChild": "YukinaOnlineDownloads",
+    "validatedChapterPages": 24,
+    "pageHashesVerified": 24
+  },
+  "liveSources": {
+    "mangapill": "cover, online chapter, page turn and offline TF-card chapter passed",
+    "goda": "210 chapters discovered; actual 120-page chapter rendered; cover thumbnail generated",
+    "mangakatana": "1202 chapters discovered; actual 24-page chapter rendered and navigated",
+    "comicabc": "HTTP 403 on current device network; not passed",
+    "manhuagui": "connection timeout on current device network; not passed",
+    "mangadex": "participated in mixed search; native reading not separately tested"
+  },
+  "limits": [
+    "Per-book queue merge/isolation checked in production Java host tests; concurrent multi-book pause/resume not separately exercised on device.",
+    "Downloaded-chapter cleanup action was not executed against the retained real-book sample.",
+    "Source availability depends on current network, title and site changes.",
+    "Source first-page blanks are preserved; no reordering to invent a cover."
+  ],
+  "publishedToGitHub": false
+}

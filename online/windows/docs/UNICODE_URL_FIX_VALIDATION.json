@@ -1,0 +1,64 @@
+{
+  "version": "0.1.2-preview",
+  "checkedAt": "2026-10-25T15:46:51.953095+00:00",
+  "cause": "CJK and spaces in raw image URLs raised UnicodeEncodeError before HTTP request. Previous live samples used ASCII paths.",
+  "nativeSource": {
+    "frozen": false,
+    "book": "水星领航员",
+    "qtPlatform": "windows",
+    "success": true,
+    "pageWidth": 1100,
+    "pageHeight": 1594,
+    "coverBytes": 415178,
+    "chapters": 19,
+    "pageDiskFiles": 0
+  },
+  "nativeWindowsStandalone": {
+    "frozen": true,
+    "book": "水星领航员",
+    "qtPlatform": "windows",
+    "success": true,
+    "pageWidth": 1100,
+    "pageHeight": 1594,
+    "coverBytes": 415178,
+    "chapters": 19,
+    "pageDiskFiles": 0
+  },
+  "additionalBooks": [
+    {
+      "type": "manhuagui",
+      "query": "葬送的芙莉莲",
+      "passed": true,
+      "title": "葬送者芙莉莲",
+      "width": 1001,
+      "height": 1470,
+      "pages": 110,
+      "asciiURL": true
+    },
+    {
+      "type": "manhuagui",
+      "query": "孤独摇滚",
+      "passed": true,
+      "title": "孤独摇滚",
+      "width": 880,
+      "height": 1248,
+      "pages": 12,
+      "asciiURL": true
+    },
+    {
+      "type": "mangapill",
+      "query": "one piece",
+      "passed": true,
+      "title": "One Piece",
+      "width": 1066,
+      "height": 1600,
+      "pages": 57,
+      "asciiURL": true
+    }
+  ],
+  "unicodeSyntheticNativeChecks": 27,
+  "onlineTests": 30,
+  "androidJavaProtocolChecks": 41,
+  "nativeAndroidExecuted": false,
+  "nativeMacExecuted": false
+}

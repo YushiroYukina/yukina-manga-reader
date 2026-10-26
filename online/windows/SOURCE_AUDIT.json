@@ -1,0 +1,15 @@
+{
+  "version": "0.1.4-windows-preview",
+  "date": "2026-10-26",
+  "baseCommit": "1136b36",
+  "scope": "Windows online reader update only",
+  "androidModified": false,
+  "macModified": false,
+  "windowsExecutable": "YukinaOnline.exe",
+  "originalLocalReaderModified": false,
+  "personalDataIncluded": false,
+  "pageDownloadsIncluded": false,
+  "license": "AGPL-3.0-only",
+  "validation": "docs/WINDOWS_UPDATE_VALIDATION.json",
+  "publishedToGitHub": false
+}

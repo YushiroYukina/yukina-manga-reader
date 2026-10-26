@@ -1,0 +1,19 @@
+{
+  "version": "0.1.4-android-preview",
+  "date": "2026-10-26",
+  "baseCommit": "c728680aba657db3758ad09b3792d14faa599fb5",
+  "scope": "Android online update only; Windows product and Mac product unchanged",
+  "androidPackage": "cn.yukina.online",
+  "desktopProductModified": false,
+  "macProductModified": false,
+  "localReaderModified": false,
+  "personalDataIncluded": false,
+  "pageDownloadsIncluded": false,
+  "coreTests": 39,
+  "javaProtocolTests": 63,
+  "nativeAndroidChecks": 15,
+  "nativeAndroidSystem": "Lenovo TB371FC, Android 15 Lineage GSI",
+  "validation": "docs/ANDROID_UPDATE_VALIDATION.json",
+  "license": "AGPL-3.0-only",
+  "publishedToGitHub": false
+}

@@ -1,0 +1,46 @@
+{
+  "scope": "Windows only",
+  "checkedAt": "2026-10-26",
+  "sources": [
+    {
+      "source": "包子漫畫.org · 中文",
+      "kind": "goda",
+      "passed": true,
+      "searchResults": 30,
+      "title": "重生佣兵的完美计划",
+      "chapters": 91,
+      "pages": 175,
+      "firstWidth": 690,
+      "firstHeight": 1280,
+      "seconds": 4.8
+    },
+    {
+      "source": "ComicABC · 中文公开作品",
+      "kind": "comicabc",
+      "passed": true,
+      "query": "世界最強",
+      "title": "開始成為世界最強的魔女 ~在只有我能看到攻略網站的世界自由生活~",
+      "searchResults": 36,
+      "chapters": 76,
+      "pages": 68,
+      "firstWidth": 1125,
+      "firstHeight": 1600
+    },
+    {
+      "source": "MangaKatana · 英文",
+      "kind": "mangakatana",
+      "passed": true,
+      "searchResults": 40,
+      "title": "One Piece",
+      "chapters": 1202,
+      "pages": 52,
+      "firstWidth": 342,
+      "firstHeight": 533,
+      "secondPageWidth": 780,
+      "secondPageHeight": 1200,
+      "note": "Source chapter 1 first page is blank/blocked artwork; second page visually confirmed as the actual comic. Pages are preserved in source order.",
+      "seconds": 24.8
+    }
+  ],
+  "note": "Read-only live probes; results reflect tested public works and current network, not all titles. Search counts may change."
+}

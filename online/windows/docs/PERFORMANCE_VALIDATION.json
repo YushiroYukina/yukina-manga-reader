@@ -1,0 +1,74 @@
+{
+  "version": "0.1.3-preview",
+  "date": "2026-10-26",
+  "windowsStandalone": {
+    "frozen": true,
+    "book": "水星领航员",
+    "qtPlatform": "windows",
+    "success": true,
+    "pageWidth": 1100,
+    "pageHeight": 1594,
+    "coverBytes": 415178,
+    "chapters": 19,
+    "coldOpenMs": 15031.0,
+    "preloadedTurnMs": 2.01,
+    "reopenMs": 204.0,
+    "reopenRequests": 0,
+    "retainedCacheBytes": {
+      "raw": 247364,
+      "prepared": 247364,
+      "decoded": 28050000
+    },
+    "pageDiskFiles": 0
+  },
+  "sourceProbe": {
+    "frozen": false,
+    "book": "水星领航员",
+    "qtPlatform": "windows",
+    "success": true,
+    "pageWidth": 1100,
+    "pageHeight": 1594,
+    "coverBytes": 415178,
+    "chapters": 19,
+    "coldOpenMs": 10968.0,
+    "preloadedTurnMs": 2.04,
+    "reopenMs": 204.0,
+    "reopenRequests": 0,
+    "retainedCacheBytes": {
+      "raw": 247364,
+      "prepared": 247364,
+      "decoded": 28050000
+    },
+    "pageDiskFiles": 0
+  },
+  "intermediateStandaloneAttempt": {
+    "frozen": true,
+    "book": "水星领航员",
+    "qtPlatform": "windows",
+    "success": false,
+    "pageWidth": 1100,
+    "pageHeight": 1594,
+    "coverBytes": 415178,
+    "chapters": 19,
+    "coldOpenMs": 6906.0,
+    "error": "Timed out waiting for native page and cover",
+    "pageDiskFiles": 0
+  },
+  "reliabilityChanges": "Bounded two-task preloading, no GUI access from background jobs, one extra attempt for the nearest two pages. Intermediate timeout retained for transparency.",
+  "automated": {
+    "desktopBaseline": 56,
+    "onlineTests": 35,
+    "androidCoreHost": 39,
+    "androidProductionJavaProtocol": 48,
+    "windowsSyntheticNative": 27
+  },
+  "androidNative": {
+    "environment": "Android 9 emulator",
+    "subsetPassed": 21,
+    "fullSuitePassed": false,
+    "failure": "QA document provider missing required MANAGE_DOCUMENTS protection. Test configuration corrected and compiled. Automatic approval rejected reinstall/start of permission-granting test helper; full rerun not performed.",
+    "physicalTabletVerified": false
+  },
+  "macNativeVerified": false,
+  "limits": "Single-book timing sample under the current network. Reopen is same-process and RAM-resident; no guarantee for cold opens or process restarts."
+}

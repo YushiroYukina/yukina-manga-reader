@@ -1,0 +1,289 @@
+{
+  "version": "0.1.3-preview",
+  "date": "2026-10-26",
+  "sourceBaseCommit": "0863c403f3a8d291007718cc38990a7593d31018",
+  "automated": {
+    "desktop-baseline": {
+      "passed": true,
+      "count": 56
+    },
+    "online-tests": {
+      "passed": true,
+      "count": 35
+    },
+    "android-build": {
+      "passed": true,
+      "count": 39
+    },
+    "android-protocol": {
+      "passed": true,
+      "count": 48
+    }
+  },
+  "windowsNativeSource": {
+    "passed": true,
+    "scope": "real-book reader/cover/performance flow",
+    "reopenRequests": 0
+  },
+  "windowsNativeStandalone": {
+    "passed": true,
+    "checks": 27,
+    "qtPlatform": "windows",
+    "normalStartupPassed": true,
+    "singleInstancePassed": null,
+    "singleInstanceNote": "Previous preview verified; not repeated for this source-preset update."
+  },
+  "realMangaDexProbe": {
+    "date": "2026-10-25",
+    "provider": "MangaDex",
+    "metadata": true,
+    "pageDecoded": true,
+    "stage": "image",
+    "results": 30,
+    "pageBytes": 165739,
+    "width": 1080,
+    "height": 1551,
+    "sha256": "c362c807ff908216108f2b89e21084a62bb398205782d532c1731f856153606c"
+  },
+  "android": {
+    "package": "cn.yukina.online",
+    "versionCode": 4,
+    "apkBuilt": true,
+    "signatureSchemes": [
+      "v2",
+      "v3"
+    ],
+    "nativeDeviceExecuted": false,
+    "nativeEmulatorExecuted": true,
+    "reason": "QA document provider missing required MANAGE_DOCUMENTS protection. Test configuration corrected and compiled. Automatic approval rejected reinstall/start of permission-granting test helper; full rerun not performed.",
+    "actualCompressedMetadataDecodedOnHost": true,
+    "nativeEmulatorSubsetChecks": 21,
+    "nativeEmulatorFullSuitePassed": false
+  },
+  "mac": {
+    "sourceAndBuildReady": true,
+    "bundleId": "cn.yukina.online.mac",
+    "nativeBuilt": false,
+    "nativeExecuted": false,
+    "reason": "Current development host is Windows; Apple Silicon handoff included."
+  },
+  "otherLiveServers": {
+    "Komga": false,
+    "Suwayomi": false
+  },
+  "originalRepositoryUnchanged": true,
+  "publishedToGitHub": false,
+  "commonSourceLiveProbe": {
+    "checkedAt": "2026-10-25T15:11:02.272296+00:00",
+    "transport": "production desktop HTTPS, certificate validation enabled",
+    "pageFilesSaved": false,
+    "sources": [
+      {
+        "source": "MangaDex · 中文",
+        "type": "mangadex",
+        "stage": "image",
+        "passed": true,
+        "results": 30,
+        "chapters": 1,
+        "pages": 32,
+        "pageBytes": 165739,
+        "width": 1080,
+        "height": 1551,
+        "sha256": "c362c807ff908216108f2b89e21084a62bb398205782d532c1731f856153606c"
+      },
+      {
+        "source": "漫画柜 · 中文",
+        "type": "manhuagui",
+        "stage": "image",
+        "passed": true,
+        "results": 10,
+        "chapters": 651,
+        "pages": 23,
+        "pageBytes": 195210,
+        "width": 810,
+        "height": 1161,
+        "sha256": "d045177f66e982a666653ffb771364d997d6adb46e98fbc866bb5d160bb99ae0"
+      },
+      {
+        "source": "MangaPill · 英文",
+        "type": "mangapill",
+        "stage": "image",
+        "passed": true,
+        "results": 50,
+        "chapters": 1212,
+        "pages": 57,
+        "pageBytes": 345017,
+        "width": 1066,
+        "height": 1600,
+        "sha256": "9b3543928e29b7f2ffe85aa26857d7d9f39c48d69de429bb41bb8c11acb59227"
+      }
+    ],
+    "productionJavaHostProbe": {
+      "sources": [
+        {
+          "pages": 23,
+          "pageBytes": 195210,
+          "chapters": 651,
+          "imageHeaderValid": true,
+          "passed": true,
+          "type": "manhuagui",
+          "searchResults": 10
+        },
+        {
+          "pages": 57,
+          "pageBytes": 345017,
+          "chapters": 1212,
+          "imageHeaderValid": true,
+          "passed": true,
+          "type": "mangapill",
+          "searchResults": 50
+        }
+      ],
+      "pageFilesSaved": false,
+      "transport": "production Java HttpURLConnection on Windows JVM, not Android UI",
+      "checkedAt": "2026-10-25T15:24:45.868164+00:00",
+      "network": "Host JVM configured to use the same existing local HTTP proxy as desktop urllib. Direct host JVM attempt timed out. No proxy is bundled or forced in Android.",
+      "nativeAndroidExecuted": false
+    }
+  },
+  "desktopInstallationUpdated": true,
+  "desktopInstallationBackupCreated": true,
+  "unicodeURLFix": {
+    "version": "0.1.3-preview",
+    "checkedAt": "2026-10-25T15:46:51.953095+00:00",
+    "cause": "CJK and spaces in raw image URLs raised UnicodeEncodeError before HTTP request. Previous live samples used ASCII paths.",
+    "nativeSource": {
+      "frozen": false,
+      "book": "水星领航员",
+      "qtPlatform": "windows",
+      "success": true,
+      "pageWidth": 1100,
+      "pageHeight": 1594,
+      "coverBytes": 415178,
+      "chapters": 19,
+      "pageDiskFiles": 0
+    },
+    "nativeWindowsStandalone": {
+      "frozen": true,
+      "book": "水星领航员",
+      "qtPlatform": "windows",
+      "success": true,
+      "pageWidth": 1100,
+      "pageHeight": 1594,
+      "coverBytes": 415178,
+      "chapters": 19,
+      "pageDiskFiles": 0
+    },
+    "additionalBooks": [
+      {
+        "type": "manhuagui",
+        "query": "葬送的芙莉莲",
+        "passed": true,
+        "title": "葬送者芙莉莲",
+        "width": 1001,
+        "height": 1470,
+        "pages": 110,
+        "asciiURL": true
+      },
+      {
+        "type": "manhuagui",
+        "query": "孤独摇滚",
+        "passed": true,
+        "title": "孤独摇滚",
+        "width": 880,
+        "height": 1248,
+        "pages": 12,
+        "asciiURL": true
+      },
+      {
+        "type": "mangapill",
+        "query": "one piece",
+        "passed": true,
+        "title": "One Piece",
+        "width": 1066,
+        "height": 1600,
+        "pages": 57,
+        "asciiURL": true
+      }
+    ],
+    "unicodeSyntheticNativeChecks": 27,
+    "onlineTests": 30,
+    "androidJavaProtocolChecks": 41,
+    "nativeAndroidExecuted": false,
+    "nativeMacExecuted": false
+  },
+  "onlinePerformance": {
+    "version": "0.1.3-preview",
+    "date": "2026-10-26",
+    "windowsStandalone": {
+      "frozen": true,
+      "book": "水星领航员",
+      "qtPlatform": "windows",
+      "success": true,
+      "pageWidth": 1100,
+      "pageHeight": 1594,
+      "coverBytes": 415178,
+      "chapters": 19,
+      "coldOpenMs": 15031.0,
+      "preloadedTurnMs": 2.01,
+      "reopenMs": 204.0,
+      "reopenRequests": 0,
+      "retainedCacheBytes": {
+        "raw": 247364,
+        "prepared": 247364,
+        "decoded": 28050000
+      },
+      "pageDiskFiles": 0
+    },
+    "sourceProbe": {
+      "frozen": false,
+      "book": "水星领航员",
+      "qtPlatform": "windows",
+      "success": true,
+      "pageWidth": 1100,
+      "pageHeight": 1594,
+      "coverBytes": 415178,
+      "chapters": 19,
+      "coldOpenMs": 10968.0,
+      "preloadedTurnMs": 2.04,
+      "reopenMs": 204.0,
+      "reopenRequests": 0,
+      "retainedCacheBytes": {
+        "raw": 247364,
+        "prepared": 247364,
+        "decoded": 28050000
+      },
+      "pageDiskFiles": 0
+    },
+    "intermediateStandaloneAttempt": {
+      "frozen": true,
+      "book": "水星领航员",
+      "qtPlatform": "windows",
+      "success": false,
+      "pageWidth": 1100,
+      "pageHeight": 1594,
+      "coverBytes": 415178,
+      "chapters": 19,
+      "coldOpenMs": 6906.0,
+      "error": "Timed out waiting for native page and cover",
+      "pageDiskFiles": 0
+    },
+    "reliabilityChanges": "Bounded two-task preloading, no GUI access from background jobs, one extra attempt for the nearest two pages. Intermediate timeout retained for transparency.",
+    "automated": {
+      "desktopBaseline": 56,
+      "onlineTests": 35,
+      "androidCoreHost": 39,
+      "androidProductionJavaProtocol": 48,
+      "windowsSyntheticNative": 27
+    },
+    "androidNative": {
+      "environment": "Android 9 emulator",
+      "subsetPassed": 21,
+      "fullSuitePassed": false,
+      "failure": "QA document provider missing required MANAGE_DOCUMENTS protection. Test configuration corrected and compiled. Automatic approval rejected reinstall/start of permission-granting test helper; full rerun not performed.",
+      "physicalTabletVerified": false
+    },
+    "macNativeVerified": false,
+    "limits": "Single-book timing sample under the current network. Reopen is same-process and RAM-resident; no guarantee for cold opens or process restarts."
+  }
+}

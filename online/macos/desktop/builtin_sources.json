@@ -1,0 +1,38 @@
+{
+  "revision": 3,
+  "sources": [
+    {
+      "id": "dm5-zh",
+      "name": "动漫屋 · 中文",
+      "type": "dm5",
+      "base_url": "https://www.dm5.com",
+      "language": "zh",
+      "enabled": true,
+      "connection": "direct"
+    },
+    {
+      "id": "mangadex-zh",
+      "name": "MangaDex · 中文",
+      "type": "mangadex",
+      "base_url": "https://api.mangadex.org",
+      "language": "zh",
+      "enabled": true
+    },
+    {
+      "id": "manhuagui-zh",
+      "name": "漫画柜 · 中文",
+      "type": "manhuagui",
+      "base_url": "https://www.manhuagui.com",
+      "language": "zh",
+      "enabled": true
+    },
+    {
+      "id": "mangapill-en",
+      "name": "MangaPill · 英文",
+      "type": "mangapill",
+      "base_url": "https://mangapill.com",
+      "language": "en",
+      "enabled": true
+    }
+  ]
+}

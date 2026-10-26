@@ -1,0 +1,73 @@
+{
+  "checkedAt": "2026-10-25T15:11:02.272296+00:00",
+  "transport": "production desktop HTTPS, certificate validation enabled",
+  "pageFilesSaved": false,
+  "sources": [
+    {
+      "source": "MangaDex · 中文",
+      "type": "mangadex",
+      "stage": "image",
+      "passed": true,
+      "results": 30,
+      "chapters": 1,
+      "pages": 32,
+      "pageBytes": 165739,
+      "width": 1080,
+      "height": 1551,
+      "sha256": "c362c807ff908216108f2b89e21084a62bb398205782d532c1731f856153606c"
+    },
+    {
+      "source": "漫画柜 · 中文",
+      "type": "manhuagui",
+      "stage": "image",
+      "passed": true,
+      "results": 10,
+      "chapters": 651,
+      "pages": 23,
+      "pageBytes": 195210,
+      "width": 810,
+      "height": 1161,
+      "sha256": "d045177f66e982a666653ffb771364d997d6adb46e98fbc866bb5d160bb99ae0"
+    },
+    {
+      "source": "MangaPill · 英文",
+      "type": "mangapill",
+      "stage": "image",
+      "passed": true,
+      "results": 50,
+      "chapters": 1212,
+      "pages": 57,
+      "pageBytes": 345017,
+      "width": 1066,
+      "height": 1600,
+      "sha256": "9b3543928e29b7f2ffe85aa26857d7d9f39c48d69de429bb41bb8c11acb59227"
+    }
+  ],
+  "productionJavaHostProbe": {
+    "sources": [
+      {
+        "pages": 23,
+        "pageBytes": 195210,
+        "chapters": 651,
+        "imageHeaderValid": true,
+        "passed": true,
+        "type": "manhuagui",
+        "searchResults": 10
+      },
+      {
+        "pages": 57,
+        "pageBytes": 345017,
+        "chapters": 1212,
+        "imageHeaderValid": true,
+        "passed": true,
+        "type": "mangapill",
+        "searchResults": 50
+      }
+    ],
+    "pageFilesSaved": false,
+    "transport": "production Java HttpURLConnection on Windows JVM, not Android UI",
+    "checkedAt": "2026-10-25T15:24:45.868164+00:00",
+    "network": "Host JVM configured to use the same existing local HTTP proxy as desktop urllib. Direct host JVM attempt timed out. No proxy is bundled or forced in Android.",
+    "nativeAndroidExecuted": false
+  }
+}

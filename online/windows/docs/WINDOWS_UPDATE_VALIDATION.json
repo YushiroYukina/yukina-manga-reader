@@ -1,0 +1,116 @@
+{
+  "version": "0.1.4-windows-preview",
+  "date": "2026-10-26",
+  "scope": "Windows x64 only",
+  "automated": {
+    "onlineRegression": {
+      "passed": 35,
+      "log": "online-baseline-final.txt"
+    },
+    "windowsWorkflow": {
+      "passed": 5,
+      "log": "windows-workflow-final.txt"
+    }
+  },
+  "frozenWorkflow": {
+    "version": "0.1.4-windows-preview",
+    "frozen": true,
+    "qtPlatform": "windows",
+    "checks": [
+      "search source dropdown removed",
+      "no shelf quality entry",
+      "no discovery quality entry",
+      "mixed search preserves source-specific results",
+      "failed source does not hide successful results",
+      "online book detail exposes download/cache entry",
+      "detail cache manager defaults to current book",
+      "detail chapter list excludes other books",
+      "download selected book chapter",
+      "other book was not downloaded",
+      "global cache browser has no download or resume action",
+      "global cache lists only already downloaded books",
+      "global browser cannot start a new network download",
+      "book-scoped queue resumes selected book",
+      "other book pending queue preserved",
+      "clear current book does not clear other book cache",
+      "cleanup preserves library entries",
+      "downloaded chapter renders offline",
+      "quality entry available inside immersive reading controls",
+      "reading menu exposes three quality presets",
+      "preloading defaults enabled",
+      "quality dialog preserves immersive mode",
+      "untouched book has no downloaded pages"
+    ],
+    "success": true,
+    "checkCount": 23
+  },
+  "frozenOnline": {
+    "version": "0.1.4-windows-preview",
+    "platform": "win32",
+    "machine": "AMD64",
+    "qtPlatform": "windows",
+    "frozen": true,
+    "checks": [
+      "six built-in sources configured for mixed search",
+      "independent online window title",
+      "isolated validation data",
+      "native Qt platform identified",
+      "native source discovery",
+      "HTTP search metadata",
+      "online chapters in shared library",
+      "first-page cover thumbnail",
+      "no implicit download destination",
+      "online browsing writes no page files",
+      "online page count",
+      "network page rendered",
+      "first read streams from source",
+      "manual chapter status retained",
+      "native async page turn records progress",
+      "immersive mode",
+      "center controls preserve immersion",
+      "explicit chapter cache completes",
+      "offline manifest page count",
+      "only selected chapter downloaded",
+      "persistent queue consumed",
+      "offline images rendered with source disabled",
+      "offline reopen preserves page",
+      "offline reopen preserves custom status",
+      "source images unchanged",
+      "independent library reload",
+      "downloads stay inside selected test directory"
+    ],
+    "originalPageHash": "b24e3a70e3ba707aa6600520eaae12cfa8e78d7e4e20c23e03ca7e5afb9b8f76",
+    "success": true,
+    "checkCount": 27
+  },
+  "liveFrozen": {
+    "goda": {
+      "frozen": true,
+      "book": "重生佣兵的完美计划",
+      "qtPlatform": "windows",
+      "success": true,
+      "pageWidth": 690,
+      "pageHeight": 1280,
+      "coverBytes": 28305,
+      "chapters": 91,
+      "pageDiskFiles": 0
+    },
+    "comicabc": {
+      "frozen": true,
+      "book": "開始成為世界最強的魔女 ~在只有我能看到攻略網站的世界自由生活~",
+      "qtPlatform": "windows",
+      "success": true,
+      "pageWidth": 1125,
+      "pageHeight": 1600,
+      "coverBytes": 367342,
+      "chapters": 76,
+      "pageDiskFiles": 0
+    }
+  },
+  "limitations": [
+    "Full inherited desktop suite did not complete in unattended native-window run; no full desktop-suite pass claimed. Targeted online tests and both frozen Windows suites passed.",
+    "Android and Mac not modified or verified in this update.",
+    "Source availability varies by work, region and date. MangaKatana test chapter first image is blank from source; subsequent page visually verified."
+  ],
+  "dataPreservation": "Installed update preceded by verified backup; installer copied no runtime data; library SHA-256 unchanged after initial launch."
+}
